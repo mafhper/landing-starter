@@ -23,7 +23,7 @@ import {
 
 /* ---- normalizeArch ------------------------------------------------------ */
 
-test("normalizeArch: vocabulario do Client Hint e das rotas viram x64/arm64", () => {
+test("normalizeArch: vocabulário do Client Hint e das rotas viram x64/arm64", () => {
   assert.equal(normalizeArch('"x86"'), "x64");   // como o header chega
   assert.equal(normalizeArch("x86_64"), "x64");
   assert.equal(normalizeArch("amd64"), "x64");

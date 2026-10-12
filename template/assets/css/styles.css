@@ -21,7 +21,7 @@
    -------------------------------------------------------------------------- */
 
 :root {
-  /* Cor de marca. Ajuste o tom para o tema escuro se necessario. */
+  /* Cor de marca. Ajuste o tom para o tema escuro se necessário. */
   --accent: __ACCENT__;
   --accent-hover: color-mix(in srgb, var(--accent) 84%, #000);
   --accent-soft: color-mix(in srgb, var(--accent) 10%, transparent);
@@ -207,7 +207,7 @@ h1, h2, h3, h4, p, figure { margin: 0; }
 .nav .btn-primary { padding: 7px 14px; font-size: 14px; }
 
 /* --------------------------------------------------------------------------
-   4. BOTOES
+   4. BOTÕES
    -------------------------------------------------------------------------- */
 
 .btn {
@@ -366,7 +366,7 @@ h1, h2, h3, h4, p, figure { margin: 0; }
 .foot-lic { font-size: 12.5px; }
 
 /* --------------------------------------------------------------------------
-   6. SECOES
+   6. SEÇÕES
    -------------------------------------------------------------------------- */
 
 .section { padding: 96px 0; position: relative; }
@@ -499,8 +499,8 @@ h1, h2, h3, h4, p, figure { margin: 0; }
 .card p { color: var(--muted); font-size: 14.5px; text-wrap: pretty; }
 
 /* --------------------------------------------------------------------------
-   8. DOWNLOAD - os cards de OS. Os botões apontam para /download/<os>,
-   rotas que o worker de download/ resolve (ver download/README.md).
+   8. DOWNLOAD - os cards de OS. Os botões resolvem o último release no
+   cliente (assets/js/latest-release.mjs, Nível 1.5 - ver download/README.md).
    -------------------------------------------------------------------------- */
 
 .install-card {

@@ -23,7 +23,7 @@ import {
 } from "./latest-release.mjs";
 
 /* Os assets reais do mafhper/mark-lee v1.8.3, congelados como fonte
-   independente (a API devolve `browser_download_url`; o teste não rede). */
+   independente (a API devolve `browser_download_url`; o teste não usa rede). */
 const MARKLEE_ASSETS = [
   { name: "Mark-Lee-1.8.3-1.x86_64.rpm", browser_download_url: "https://github.com/mafhper/mark-lee/releases/download/v1.8.3/Mark-Lee-1.8.3-1.x86_64.rpm" },
   { name: "Mark-Lee_1.8.3_aarch64.app.tar.gz", browser_download_url: "https://github.com/mafhper/mark-lee/releases/download/v1.8.3/Mark-Lee_1.8.3_aarch64.app.tar.gz" },
@@ -42,7 +42,7 @@ test("chooseAsset: os assets reais do mark-lee v1.8.3 por plataforma", () => {
   assert.equal(chooseAsset(MARKLEE_ASSETS, DEFAULT_PATTERNS.linux).name, "Mark-Lee_1.8.3_amd64.deb");
 });
 
-test("chooseAsset: a ordem dos padroes vence a ordem dos assets", () => {
+test("chooseAsset: a ordem dos padrões vence a ordem dos assets", () => {
   const assets = [
     { name: "App_1.0.0_aarch64.app.tar.gz" },
     { name: "App_1.0.0_aarch64.dmg" },
@@ -60,7 +60,7 @@ test("chooseAsset: sem match, lista vazia ou lixo -> null (o link fica no fallba
 
 /* ---- parsePatterns + patternsFor ---------------------------------------- */
 
-test("parsePatterns: lista separada por virgula vira regex; vazio e invalido viram null", () => {
+test("parsePatterns: lista separada por vírgula vira regex; vazio e inválido viram null", () => {
   const ps = parsePatterns("\\.pkg$, [sem-fechar");
   assert.equal(ps.length, 1);
   assert.ok(ps[0].test("App.pkg"));
@@ -70,8 +70,8 @@ test("parsePatterns: lista separada por virgula vira regex; vazio e invalido vir
 });
 
 test("patternsFor: data-release-patterns vence; desconhecido vira null", () => {
-  const comOverride = { dataset: { releaseOs: "macos", releasePatterns: "\\.pkg$" } };
-  assert.equal(patternsFor(comOverride)[0].source, "\\.pkg$");
+  const withOverride = { dataset: { releaseOs: "macos", releasePatterns: "\\.pkg$" } };
+  assert.equal(patternsFor(withOverride)[0].source, "\\.pkg$");
   assert.deepEqual(patternsFor({ dataset: { releaseOs: "windows" } }), DEFAULT_PATTERNS.windows);
   assert.equal(patternsFor({ dataset: { releaseOs: "solaris" } }), null);
   assert.equal(patternsFor({ dataset: {} }), null);
@@ -79,7 +79,7 @@ test("patternsFor: data-release-patterns vence; desconhecido vira null", () => {
 
 /* ---- fallbackUrl + fetchLatest ------------------------------------------ */
 
-test("fallbackUrl: a pagina de releases do repositorio", () => {
+test("fallbackUrl: a página de releases do repositório", () => {
   assert.equal(fallbackUrl("OWNER/REPO"), "https://github.com/OWNER/REPO/releases/latest");
 });
 
@@ -91,7 +91,7 @@ test("fetchLatest: consulta /releases/latest e devolve o JSON", async () => {
   assert.equal(release.tag_name, "v9.9.9");
 });
 
-test("fetchLatest: resposta nao-ok ou excecao de rede viram null", async () => {
+test("fetchLatest: resposta não-ok ou exceção de rede viram null", async () => {
   assert.equal(await fetchLatest("OWNER/REPO", async () => ({ ok: false })), null);
   assert.equal(await fetchLatest("OWNER/REPO", async () => { throw new Error("rede"); }), null);
 });
@@ -114,46 +114,46 @@ const releaseFake = () => ({
   json: async () => ({ tag_name: "v1.8.3", assets: MARKLEE_ASSETS }),
 });
 
-test("applyLatestRelease: reescreve os tres botoes para os assets da v1.8.3", async () => {
-  const botoes = [fakeButton("macos"), fakeButton("windows"), fakeButton("linux")];
-  const n = await applyLatestRelease(fakeDoc("mafhper/mark-lee", botoes), { fetchImpl: async () => releaseFake() });
+test("applyLatestRelease: reescreve os três botões para os assets da v1.8.3", async () => {
+  const buttons = [fakeButton("macos"), fakeButton("windows"), fakeButton("linux")];
+  const n = await applyLatestRelease(fakeDoc("mafhper/mark-lee", buttons), { fetchImpl: async () => releaseFake() });
   assert.equal(n, 3);
-  assert.equal(botoes[0].href, "https://github.com/mafhper/mark-lee/releases/download/v1.8.3/Mark-Lee_1.8.3_aarch64.app.tar.gz");
-  assert.equal(botoes[1].href, "https://github.com/mafhper/mark-lee/releases/download/v1.8.3/Mark-Lee_1.8.3_x64_en-US.msi");
-  assert.equal(botoes[2].href, "https://github.com/mafhper/mark-lee/releases/download/v1.8.3/Mark-Lee_1.8.3_amd64.deb");
+  assert.equal(buttons[0].href, "https://github.com/mafhper/mark-lee/releases/download/v1.8.3/Mark-Lee_1.8.3_aarch64.app.tar.gz");
+  assert.equal(buttons[1].href, "https://github.com/mafhper/mark-lee/releases/download/v1.8.3/Mark-Lee_1.8.3_x64_en-US.msi");
+  assert.equal(buttons[2].href, "https://github.com/mafhper/mark-lee/releases/download/v1.8.3/Mark-Lee_1.8.3_amd64.deb");
 });
 
 test("applyLatestRelease: release sem assets -> fallback no href vazio", async () => {
-  const botoes = [fakeButton("macos")];
-  const n = await applyLatestRelease(fakeDoc("mafhper/landing-starter", botoes), {
+  const buttons = [fakeButton("macos")];
+  const n = await applyLatestRelease(fakeDoc("mafhper/landing-starter", buttons), {
     fetchImpl: async () => ({ ok: true, json: async () => ({ assets: [] }) }),
   });
   assert.equal(n, 0);
-  assert.equal(botoes[0].href, "https://github.com/mafhper/landing-starter/releases/latest");
+  assert.equal(buttons[0].href, "https://github.com/mafhper/landing-starter/releases/latest");
 });
 
 test("applyLatestRelease: API fora do ar -> fallback no href vazio", async () => {
-  const botoes = [fakeButton("windows")];
-  const n = await applyLatestRelease(fakeDoc("mafhper/landing-starter", botoes), {
+  const buttons = [fakeButton("windows")];
+  const n = await applyLatestRelease(fakeDoc("mafhper/landing-starter", buttons), {
     fetchImpl: async () => ({ ok: false }),
   });
   assert.equal(n, 0);
-  assert.equal(botoes[0].href, "https://github.com/mafhper/landing-starter/releases/latest");
+  assert.equal(buttons[0].href, "https://github.com/mafhper/landing-starter/releases/latest");
 });
 
-test("applyLatestRelease: falha mantem o href que veio do HTML", async () => {
-  const botao = { href: "https://github.com/mafhper/mark-lee/releases/latest", dataset: { releaseOs: "macos" } };
-  const n = await applyLatestRelease(fakeDoc("mafhper/mark-lee", [botao]), {
+test("applyLatestRelease: falha mantém o href que veio do HTML", async () => {
+  const button = { href: "https://github.com/mafhper/mark-lee/releases/latest", dataset: { releaseOs: "macos" } };
+  const n = await applyLatestRelease(fakeDoc("mafhper/mark-lee", [button]), {
     fetchImpl: async () => { throw new Error("rede"); },
   });
   assert.equal(n, 0);
-  assert.equal(botao.href, "https://github.com/mafhper/mark-lee/releases/latest");
+  assert.equal(button.href, "https://github.com/mafhper/mark-lee/releases/latest");
 });
 
-test("applyLatestRelease: sem data-repo (ou placeholder) nao consulta a API", async () => {
-  let chamou = false;
-  const fetchImpl = async () => { chamou = true; return { ok: true, json: async () => ({}) }; };
+test("applyLatestRelease: sem data-repo (ou placeholder) não consulta a API", async () => {
+  let called = false;
+  const fetchImpl = async () => { called = true; return { ok: true, json: async () => ({}) }; };
   assert.equal(await applyLatestRelease(fakeDoc("", [fakeButton("macos")]), { fetchImpl }), 0);
   assert.equal(await applyLatestRelease(fakeDoc("__REPO__", [fakeButton("macos")]), { fetchImpl }), 0);
-  assert.equal(chamou, false);
+  assert.equal(called, false);
 });

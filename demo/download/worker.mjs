@@ -2,7 +2,7 @@
    worker.mjs - resolve /download/<os> para o asset do ÚLTIMO release.
 
    Este é o padrão destilado do site analisado (ver README do template).
-   O site fica 100% estático; a inteligencia mora aqui, em três passos:
+   O site fica 100% estático; a inteligência mora aqui, em três passos:
 
      1. /download/<os>          -> escolhe a arquitetura pelo Client Hint
                                    (Sec-CH-UA-Arch) e redireciona para a
@@ -10,13 +10,13 @@
      2. /download/<os>-<arch>   -> descobre a tag do último release (cache de
                                    300s) e responde 302 para o asset no GitHub
      3. GitHub                  -> redireciona de novo para a URL assinada e
-                                   entrega o binario (isso é do GitHub)
+                                   entrega o binário (isso é do GitHub)
 
    Por que dois hops: o hop 1 é barato e deixa a escolha de arquitetura
    VISÍVEL e cacheável por variante; o hop 2 é o que consulta a API e por
    isso é o que tem cache curto. Nenhum JS roda no navegador do usuário.
 
-   CONFIGURACAO: troque repo e assets abaixo. Os templates usam
+   CONFIGURAÇÃO: troque repo e assets abaixo. Os templates usam
    {tag} = v1.2.3 e {version} = 1.2.3.
    ========================================================================== */
 
@@ -66,7 +66,7 @@ const OS_ALIASES = {
 };
 
 /* Sec-CH-UA-Arch chega como `"x86"` (com aspas), `"arm"` ou vazio.
-   Normaliza para o vocabulario das rotas: x64 | arm64. */
+   Normaliza para o vocabulário das rotas: x64 | arm64. */
 export function normalizeArch(value) {
   if (!value) return null;
   const v = String(value).replace(/["']/g, "").trim().toLowerCase();
