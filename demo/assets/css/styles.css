@@ -1,0 +1,590 @@
+/* ==========================================================================
+   landing-starter - styles.css
+
+   Um design system de UMA pagina. Sem framework, sem build.
+   Ordem de leitura: tokens -> base -> nav -> hero -> secoes -> cards ->
+   download -> faq -> footer -> breakpoints.
+
+   Os tres padroes que dao o carater (e que valem entender antes de editar):
+   1. Hairlines em vez de sombras: profundidade por fio de 1px.
+   2. Grid como fio: cards com gap de 1px sobre fundo --hairline.
+   3. Nav subtrativa: cada breakpoint esconde o que nao e essencial.
+
+   Comentario do autor: os nomes de token sao PAPEL, nao matiz.
+   Trocar o valor troca o tema; trocar o papel quebra a hierarquia.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. TOKENS
+   Troque aqui primeiro. O tema claro vive no :root; o escuro sobrescreve
+   os mesmos papeis na classe .dark do <html>.
+   -------------------------------------------------------------------------- */
+
+:root {
+  /* Cor de marca. Ajuste o tom para o tema escuro se necessario. */
+  --accent: #7c3aed;
+  --accent-hover: color-mix(in srgb, var(--accent) 84%, #000);
+  --accent-soft: color-mix(in srgb, var(--accent) 10%, transparent);
+  --accent-ring: color-mix(in srgb, var(--accent) 55%, transparent);
+  --on-accent: #fff;
+
+  /* Escada de superficie: canvas (pagina) -> band (faixa) -> surface (card) */
+  --canvas: #fff;
+  --band: #f7f8fa;
+  --surface: #fff;
+  --surface-2: #f1f3f6;
+
+  /* Tinta: ink (texto forte) -> muted (corpo) -> faint (micro) */
+  --ink: #13161c;
+  --muted: #555c66;
+  --faint: #848b96;
+
+  /* Fios */
+  --hairline: #e5e8ed;
+  --hairline-strong: #d3d8e0;
+
+  /* Raios: um conjunto fechado, cada componente pega um degrau */
+  --r-xs: 4px;
+  --r-sm: 6px;
+  --r-md: 8px;
+  --r-lg: 12px;
+  --r-xl: 14px;
+  --r-pill: 9999px;
+
+  /* Layout */
+  --maxw: 1160px;
+  --nav-h: 56px;
+
+  /* Tipografia.
+     Default sem dependencia externa. Para usar uma fonte propria,
+     coloque os .woff2 em assets/fonts/ e declare @font-face aqui. */
+  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", "Cascadinha Mono", Menlo, Consolas, monospace;
+}
+
+.dark {
+  --accent: color-mix(in srgb, #7c3aed 78%, #fff);
+  --accent-hover: color-mix(in srgb, #7c3aed 88%, #fff);
+  --accent-soft: color-mix(in srgb, var(--accent) 14%, transparent);
+  --accent-ring: color-mix(in srgb, var(--accent) 60%, transparent);
+  --on-accent: #071021;
+
+  --canvas: #07080b;
+  --band: #0a0c10;
+  --surface: #0f1117;
+  --surface-2: #141721;
+
+  --ink: #f2f4f8;
+  --muted: #8e95a2;
+  --faint: #626976;
+
+  --hairline: #1e222c;
+  --hairline-strong: #2c3140;
+}
+
+/* --------------------------------------------------------------------------
+   2. BASE
+   -------------------------------------------------------------------------- */
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--canvas);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.55;
+  letter-spacing: -0.006em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: clip;
+}
+
+a { color: inherit; text-decoration: none; }
+img, svg { display: block; }
+h1, h2, h3, h4, p, figure { margin: 0; }
+
+::selection { background: color-mix(in srgb, var(--accent) 25%, transparent); }
+
+/* Ancoras: o offset e a altura da nav fixa + folga */
+[id] { scroll-margin-top: calc(var(--nav-h) + 16px); }
+
+.mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums; letter-spacing: 0; }
+
+.wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 32px; }
+
+/* --------------------------------------------------------------------------
+   3. NAV
+   Fixed com blur. A classe .scrolled (via app.js) acende a borda inferior.
+   A responsividade e SUBTRATIVA: em cada breakpoint some uma peca,
+   nunca entra um hamburger. O que fica sempre: brand + CTA.
+   -------------------------------------------------------------------------- */
+
+.nav {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 100;
+  background: color-mix(in srgb, var(--canvas) 78%, transparent);
+  -webkit-backdrop-filter: saturate(160%) blur(16px);
+  backdrop-filter: saturate(160%) blur(16px);
+  border-bottom: 1px solid transparent;
+  transition: border-color .2s, background .2s;
+}
+.nav.scrolled { border-bottom-color: var(--hairline); }
+
+.nav-inner {
+  height: var(--nav-h);
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 0 32px;
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  white-space: nowrap;
+  flex: none;
+}
+.brand-mark {
+  width: 22px; height: 22px;
+  border-radius: 22%;
+  background: var(--accent);
+  flex: none;
+}
+
+.nav-links { display: flex; gap: 2px; margin-left: 8px; }
+.nav-links a, .nav-gh {
+  padding: 6px 11px;
+  border-radius: var(--r-sm);
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 450;
+  white-space: nowrap;
+  transition: color .15s, background .15s;
+}
+.nav-links a:hover, .nav-gh:hover { color: var(--ink); }
+
+.nav-right { margin-left: auto; display: flex; align-items: center; gap: 6px; flex: none; }
+
+.nav-gh { display: inline-flex; align-items: center; justify-content: center; }
+
+.icon-btn {
+  width: 34px; height: 34px;
+  display: inline-flex; align-items: center; justify-content: center;
+  border: none; background: transparent;
+  border-radius: var(--r-md);
+  color: var(--muted);
+  cursor: pointer;
+  transition: color .15s, background .15s;
+}
+.icon-btn:hover { color: var(--ink); background: color-mix(in srgb, var(--ink) 7%, transparent); }
+
+/* O icone troca com o tema: sol no escuro, lua no claro */
+.dark .icon-moon { display: none; }
+.icon-sun { display: none; }
+.dark .icon-sun { display: inline; }
+
+.nav .btn-primary { padding: 7px 14px; font-size: 14px; }
+
+/* --------------------------------------------------------------------------
+   4. BOTOES
+   -------------------------------------------------------------------------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border: 1px solid transparent;
+  border-radius: var(--r-md);
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: -0.006em;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: transform .15s, background .15s, border-color .15s, color .15s;
+}
+.btn:active { transform: scale(.97); }
+.btn:focus-visible { outline: 2px solid var(--accent-ring); outline-offset: 2px; }
+
+.btn-primary { background: var(--accent); color: var(--on-accent); }
+.btn-primary:hover { background: var(--accent-hover); }
+
+/* --------------------------------------------------------------------------
+   5. HERO
+   A grade decorativa e desenhada com dois gradientes repetidos + mascara
+   radial: zero elementos extra, zero JS. Fica atras do conteudo
+   (pointer-events: none) e some no tema escuro? Nao - ela acompanha o tema
+   pelo token --hairline.
+   -------------------------------------------------------------------------- */
+
+.hero {
+  position: relative;
+  text-align: center;
+  padding: calc(var(--nav-h) + 92px) 0 96px;
+}
+
+.hero-grid {
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 448px;
+  overflow: hidden;
+  pointer-events: none;
+  background-image:
+    linear-gradient(to right, var(--hairline) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--hairline) 1px, transparent 1px);
+  background-size: 56px 56px;
+  background-position: center top;
+  -webkit-mask-image: radial-gradient(120% 100% at 50% 0, #000d 0%, #0008 45%, transparent 85%);
+  mask-image: radial-gradient(120% 100% at 50% 0, #000d 0%, #0008 45%, transparent 85%);
+}
+
+.hero-inner { position: relative; z-index: 1; }
+
+.hero-spec {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 12.5px;
+  letter-spacing: .03em;
+  color: var(--muted);
+}
+.hero-spec b { color: var(--ink); font-weight: 500; }
+.hero-spec .sep { color: var(--faint); }
+
+.hero h1 {
+  margin: 22px 0 0;
+  font-size: clamp(42px, 6.2vw, 72px);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.06;
+  text-wrap: balance;
+}
+.accent-word { color: var(--accent); }
+
+.hero .lede {
+  margin: 22px auto 0;
+  max-width: 52ch;
+  font-size: clamp(17px, 2.2vw, 20px);
+  color: var(--muted);
+  text-wrap: pretty;
+}
+.hero .lede b { color: var(--ink); font-weight: 600; }
+
+.cta-row {
+  margin-top: 34px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Comando copiavel: mono, com botao de copiar que vira .done no sucesso */
+.brew {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 7px 7px 14px;
+  border: 1px solid var(--hairline-strong);
+  border-radius: var(--r-md);
+  background: var(--surface-2);
+  font-family: var(--font-mono);
+  font-size: 13.5px;
+  color: var(--ink);
+}
+.brew .sigil { color: var(--accent); }
+.copy-btn {
+  width: 30px; height: 30px;
+  display: inline-flex; align-items: center; justify-content: center;
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-sm);
+  background: var(--surface);
+  color: var(--muted);
+  cursor: pointer;
+  transition: color .15s, background .15s, border-color .15s;
+}
+.copy-btn:hover { color: var(--ink); background: var(--surface-2); }
+.copy-btn.done { color: var(--accent); border-color: var(--accent); }
+.copy-btn svg { width: 15px; height: 15px; }
+
+.hero-foot {
+  margin-top: 26px;
+  color: var(--faint);
+  font-size: 13px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 8px 22px;
+}
+.foot-os-row { display: inline-flex; align-items: center; gap: 14px; }
+.foot-os {
+  position: relative;
+  cursor: default;
+}
+.foot-os .foot-tip {
+  position: absolute;
+  bottom: calc(100% + 9px);
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 5px 9px;
+  border: 1px solid var(--hairline-strong);
+  border-radius: var(--r-sm);
+  background: var(--surface-2);
+  color: var(--muted);
+  font-size: 12px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .15s;
+}
+.foot-os:hover .foot-tip,
+.foot-os:focus-visible .foot-tip { opacity: 1; }
+.foot-lic { font-size: 12.5px; }
+
+/* --------------------------------------------------------------------------
+   6. SECOES
+   -------------------------------------------------------------------------- */
+
+.section { padding: 96px 0; position: relative; }
+
+/* A juncao horizontal entre secoes. Em telas largas (>=1024px) ganha
+   marcadores "+" desenhados em mono nos dois cantos - o "desenho de planta". */
+.rule { border-top: 1px solid var(--hairline); }
+@media (min-width: 1024px) {
+  .rule::before, .rule::after {
+    content: "+";
+    position: absolute;
+    top: 0;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 0;
+    color: var(--hairline-strong);
+    transform: translateY(-0.5px);
+    pointer-events: none;
+    user-select: none;
+  }
+  .rule::before { left: 0; transform: translate(-50%, -0.5px); }
+  .rule::after { right: 0; transform: translate(50%, -0.5px); }
+}
+
+.section-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 32px;
+  margin-bottom: 56px;
+}
+.section-head-copy { max-width: 640px; }
+.section-head h2 {
+  margin: 0 0 14px;
+  font-size: clamp(28px, 3.6vw, 40px);
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  line-height: 1.12;
+  text-wrap: balance;
+}
+.section-head p { color: var(--muted); font-size: clamp(16px, 1.8vw, 18px); text-wrap: pretty; }
+
+/* Spec no canto da secao: mono, micro, caixa alta opcional */
+.spec-line {
+  flex: none;
+  padding-bottom: 6px;
+  font-size: 12px;
+  letter-spacing: .04em;
+  color: var(--faint);
+  white-space: nowrap;
+}
+
+/* --------------------------------------------------------------------------
+   7. CARDS - o "grid como fio": gap de 1px sobre fundo hairline.
+   -------------------------------------------------------------------------- */
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--hairline);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+}
+
+.card { display: flex; flex-direction: column; background: var(--canvas); transition: background .15s; }
+.card:hover { background: var(--band); }
+
+.card-well {
+  padding: 18px;
+  border-bottom: 1px solid var(--hairline);
+  background-color: color-mix(in srgb, var(--band) 72%, var(--canvas));
+  overflow: hidden;
+}
+.card-well svg { width: 100%; max-width: 320px; height: auto; margin: 0 auto; }
+
+.card-body { padding: 20px 26px 26px; }
+.card h3 { font-size: 17px; font-weight: 600; letter-spacing: -0.015em; margin-bottom: 8px; }
+.card p { color: var(--muted); font-size: 14.5px; text-wrap: pretty; }
+
+/* --------------------------------------------------------------------------
+   8. DOWNLOAD - os cards de OS. Os botoes apontam para /download/<os>,
+   rotas que o worker de download/ resolve (ver download/README.md).
+   -------------------------------------------------------------------------- */
+
+.install-card {
+  display: flex;
+  flex-direction: column;
+  padding: 26px 24px;
+  background: var(--canvas);
+}
+.install-os { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+.os-mark { width: 20px; height: 20px; color: var(--ink); flex: none; }
+.install-card h3 { font-size: 17px; font-weight: 600; letter-spacing: -0.015em; }
+.install-card p { margin-top: 6px; color: var(--muted); font-size: 14.5px; text-wrap: pretty; }
+.install-dl { align-self: flex-start; margin-top: 18px; }
+
+.install-note {
+  margin-top: 20px;
+  font-size: 12.5px;
+  color: var(--faint);
+  text-align: center;
+}
+.install-note code {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  padding: 2px 6px;
+  border-radius: var(--r-xs);
+  background: color-mix(in srgb, var(--ink) 6%, transparent);
+  color: var(--ink);
+}
+
+/* --------------------------------------------------------------------------
+   9. FAQ - <details> nativo. Zero JS.
+   -------------------------------------------------------------------------- */
+
+.faq-grid { display: grid; grid-template-columns: .8fr 1.2fr; gap: 64px; align-items: start; }
+.faq-head h2 {
+  margin: 0 0 16px;
+  font-size: clamp(28px, 3.6vw, 40px);
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  line-height: 1.12;
+  text-wrap: balance;
+}
+.faq-head p { color: var(--muted); font-size: 15px; max-width: 34ch; text-wrap: pretty; }
+.faq-head a { color: var(--accent); }
+.faq-head a:hover { text-decoration: underline; }
+
+.faq-list { border-top: 1px solid var(--hairline); }
+.faq-item { border-bottom: 1px solid var(--hairline); }
+.faq-q {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 22px 4px;
+  list-style: none;
+  cursor: pointer;
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.012em;
+}
+.faq-q::-webkit-details-marker { display: none; }
+.faq-chev { color: var(--muted); transition: transform .2s; font-family: var(--font-mono); }
+.faq-item[open] .faq-chev { transform: rotate(45deg); }
+.faq-a { padding: 0 4px 24px; color: var(--muted); font-size: 15.5px; text-wrap: pretty; }
+
+/* --------------------------------------------------------------------------
+   10. FOOTER
+   -------------------------------------------------------------------------- */
+
+footer { border-top: 1px solid var(--hairline); padding: 72px 0 44px; }
+.foot-grid { display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr; gap: 40px; }
+.foot-brand p { margin-top: 14px; max-width: 300px; color: var(--muted); font-size: 14px; text-wrap: pretty; }
+.foot-col h5 {
+  margin: 0 0 12px;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-weight: 500;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+.foot-col a { display: block; padding: 6px 0; color: var(--muted); font-size: 14.5px; transition: color .15s; }
+.foot-col a:hover { color: var(--accent); }
+
+.foot-bot {
+  margin-top: 52px;
+  padding-top: 24px;
+  border-top: 1px solid var(--hairline);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* --------------------------------------------------------------------------
+   11. BREAKPOINTS - a nav e subtrativa; o conteudo so empilha.
+   920 e o divisor: 680 ajusta densidade; 600 e 380 sao a nav.
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 920px) {
+  /* nav: somem os links de secao */
+  .nav-links { display: none; }
+
+  /* conteudo */
+  .section-head { display: block; margin-bottom: 44px; }
+  .spec-line { display: none; }
+  .faq-grid { grid-template-columns: 1fr; gap: 36px; }
+  .card-grid.card-grid-3 { grid-template-columns: 1fr; }
+  .foot-grid { grid-template-columns: 1fr 1fr; gap: 28px; }
+}
+
+@media (max-width: 680px) {
+  .section { padding: 72px 0; }
+  .hero { padding-top: calc(var(--nav-h) + 72px); }
+  .nav-inner { gap: 14px; padding: 0 20px; }
+  .wrap { padding: 0 20px; }
+  .card-grid { grid-template-columns: 1fr; }
+  .foot-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 600px) {
+  /* nav: some o link do GitHub */
+  .nav-gh { display: none; }
+}
+
+@media (max-width: 380px) {
+  /* nav: some o toggle de tema; sobra brand + CTA */
+  .icon-btn { display: none; }
+  .nav-inner { padding: 0 16px; }
+  .wrap { padding: 0 16px; }
+}
+
+/* --------------------------------------------------------------------------
+   12. MOVIMENTO REDUZIDO
+   Quem pediu menos animacao pediu menos animacao em tudo.
+   -------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .btn, .icon-btn, .copy-btn, .card, .faq-chev, .foot-os .foot-tip, .nav {
+    transition: none;
+  }
+  .btn:active { transform: none; }
+}

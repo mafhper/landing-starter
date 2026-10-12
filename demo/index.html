@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en" class="theme-loading">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Demo Notes</title>
+  <meta name="description" content="A local-first notes app for people who do not want an account." />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Demo Notes" />
+  <meta property="og:description" content="A local-first notes app for people who do not want an account." />
+  <meta property="og:type" content="website" />
+
+  <!--
+    Anti-FOUC: aplica o tema antes do primeiro paint.
+    "system" segue o prefers-color-scheme; o toggle grava em localStorage.
+    Este script precisa ficar inline e no <head> — se virar um arquivo
+    externo, a pagina pisca no tema errado antes de ele carregar.
+  -->
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem("theme") || "system";
+        var dark = t === "dark" || (t === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+        document.documentElement.classList.toggle("dark", dark);
+      } catch (e) {}
+      document.documentElement.classList.remove("theme-loading");
+    })();
+  </script>
+
+  <link rel="stylesheet" href="assets/css/styles.css" />
+</head>
+<body>
+  <header class="nav" id="nav">
+    <div class="nav-inner">
+      <a class="brand" href="/">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span>Demo Notes</span>
+      </a>
+
+      <nav class="nav-links" aria-label="Primary">
+        <a href="#features">Features</a>
+        <a href="#download">Download</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+
+      <div class="nav-right">
+        <a class="nav-gh" href="https://github.com/mafhper/landing-starter" target="_blank" rel="noopener" aria-label="GitHub repository">
+          <svg viewBox="0 0 16 16" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.42 7.42 0 0 1 4 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
+        </a>
+
+        <button type="button" class="icon-btn" id="theme-toggle" aria-label="Toggle theme" title="Toggle theme">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path class="icon-moon" d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
+            <g class="icon-sun"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></g>
+          </svg>
+        </button>
+
+        <a class="btn btn-primary" href="#download">Download</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- ============================== HERO ============================== -->
+    <section class="hero">
+      <div class="hero-grid" aria-hidden="true">
+        <div class="hero-grid-cells"></div>
+      </div>
+
+      <div class="wrap hero-inner">
+        <span class="hero-spec mono">
+          <b>v1.0.0</b>
+          <span class="sep">/</span>
+          <span>local-first</span>
+          <span class="sep">/</span>
+          <span>no account</span>
+        </span>
+
+        <h1>Your notes,<br /><span class="accent-word">finally local.</span></h1>
+
+        <p class="lede">
+          Notes stay on disk. Built for macOS, Linux and Windows,
+          <b>without an account and without the cloud.</b>
+        </p>
+
+        <div class="cta-row">
+          <a class="btn btn-primary" href="#download">
+            <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
+            <span>Download</span>
+          </a>
+          <div class="brew" id="brew">
+            <span class="sigil">$</span>
+            <span class="brew-cmd">brew install --cask demo-notes</span>
+            <button type="button" class="copy-btn" data-copy="brew install --cask demo-notes" aria-label="Copy command"></button>
+          </div>
+        </div>
+
+        <p class="hero-foot">
+          <span class="foot-os-row">
+            <span class="foot-os">.dmg<span class="foot-tip mono">macOS</span></span>
+            <span class="foot-os">.deb / .rpm<span class="foot-tip mono">Linux</span></span>
+            <span class="foot-os">.msi<span class="foot-tip mono">Windows</span></span>
+          </span>
+          <span class="foot-lic mono">MIT / Apache-2.0</span>
+        </p>
+      </div>
+    </section>
+
+    <!-- ============================ FEATURES ============================ -->
+    <section class="section rule" id="features">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="section-head-copy">
+            <h2>What it does.</h2>
+            <p>Write it, find it, keep it. Three promises, and nothing else.</p>
+          </div>
+          <span class="spec-line mono">spec / 01-03</span>
+        </div>
+
+        <div class="card-grid">
+          <article class="card">
+            <div class="card-well" aria-hidden="true">
+              <svg viewBox="0 0 200 110" fill="none"><rect x="30" y="24" width="140" height="62" rx="8" stroke="var(--hairline-strong)"/><path d="M30 42h140" stroke="var(--hairline-strong)"/><circle cx="42" cy="33" r="3" fill="var(--accent)"/><path d="M46 58h60M46 68h44" stroke="var(--faint)" stroke-linecap="round"/></svg>
+            </div>
+            <div class="card-body">
+              <h3>Capture, don't file</h3>
+              <p>Open a note and start typing. Titles, folders and tags are optional, not a ritual.</p>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-well" aria-hidden="true">
+              <svg viewBox="0 0 200 110" fill="none"><path d="M40 78 78 36l28 24 40-44" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M40 78h120" stroke="var(--hairline-strong)"/><circle cx="78" cy="36" r="4" fill="var(--accent)"/><circle cx="146" cy="16" r="4" fill="var(--accent)"/></svg>
+            </div>
+            <div class="card-body">
+              <h3>Sync is a choice</h3>
+              <p>Notes live in a folder you own. Put it in iCloud, Dropbox or git, or nowhere at all.</p>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-well" aria-hidden="true">
+              <svg viewBox="0 0 200 110" fill="none"><rect x="52" y="30" width="96" height="52" rx="10" stroke="var(--hairline-strong)"/><path d="M100 30v52" stroke="var(--hairline-strong)"/><circle cx="76" cy="56" r="6" fill="var(--accent)"/></svg>
+            </div>
+            <div class="card-body">
+              <h3>Plain Markdown</h3>
+              <p>Every note is a .md file. Your editor of choice stays your editor of choice.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================ DOWNLOAD ============================ -->
+    <section class="section rule" id="download">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="section-head-copy">
+            <h2>Up and running in a minute.</h2>
+            <p>Signed builds for macOS, Linux and Windows. The buttons below resolve the latest release automatically.</p>
+          </div>
+          <span class="spec-line mono">.dmg / .deb / .msi</span>
+        </div>
+
+        <div class="card-grid card-grid-3">
+          <div class="install-card">
+            <div class="install-os"><svg class="os-mark" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.05 12.54c-.03-2.9 2.36-4.29 2.47-4.36-1.35-1.97-3.44-2.24-4.18-2.27-1.78-.18-3.47 1.05-4.37 1.05-.9 0-2.29-1.02-3.77-1-1.94.03-3.72 1.13-4.72 2.86-2.01 3.49-.51 8.66 1.45 11.49.96 1.39 2.1 2.94 3.6 2.89 1.45-.06 2-.93 3.75-.93 1.75 0 2.24.93 3.77.9 1.56-.03 2.55-1.41 3.5-2.81 1.1-1.61 1.56-3.17 1.58-3.25-.03-.02-3.03-1.16-3.06-4.6ZM14.2 4.06c.8-.97 1.33-2.31 1.19-3.65-1.15.05-2.53.77-3.35 1.73-.73.85-1.38 2.22-1.21 3.53 1.28.1 2.59-.65 3.37-1.61Z"/></svg><h3>macOS</h3></div>
+            <p>Requires macOS 13 or later.</p>
+            <a class="btn btn-primary install-dl" href="https://github.com/mafhper/landing-starter/releases">Download .dmg</a>
+          </div>
+
+          <div class="install-card">
+            <div class="install-os"><svg class="os-mark" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M0 3.45 9.75 2.1v9.45H0m10.95-9.6L24 0v11.4H10.95M0 12.6h9.75v9.45L0 20.7M10.95 12.6H24V24l-12.9-1.8"/></svg><h3>Windows</h3></div>
+            <p>Portable .zip and per-user .msi installers.</p>
+            <a class="btn btn-primary install-dl" href="https://github.com/mafhper/landing-starter/releases">Download .msi</a>
+          </div>
+
+          <div class="install-card">
+            <div class="install-os"><svg class="os-mark" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2c-1.7 0-3 1.7-3 4 0 .6.1 1.2.3 1.7C6.6 8.6 5 10.7 5 13.3c0 2.4 1.3 4.4 3.2 5.3.4 2 2 3.4 3.8 3.4s3.4-1.4 3.8-3.4c1.9-.9 3.2-2.9 3.2-5.3 0-2.6-1.6-4.7-4.3-5.6.2-.5.3-1.1.3-1.7 0-2.3-1.3-4-3-4Zm0 2c.6 0 1 1 1 2 0 .4 0 .7-.1 1.1-.3-.1-.6-.1-.9-.1s-.6 0-.9.1c-.1-.4-.1-.7-.1-1.1 0-1 .4-2 1-2Zm-1.9 14.6c.5.3 1.2.4 1.9.4s1.4-.1 1.9-.4c-.4.9-1.1 1.4-1.9 1.4s-1.5-.5-1.9-1.4Z"/></svg><h3>Linux</h3></div>
+            <p>Packages for amd64 and arm64, .deb / .rpm / Arch.</p>
+            <a class="btn btn-primary install-dl" href="https://github.com/mafhper/landing-starter/releases">Download .deb</a>
+          </div>
+        </div>
+
+        <p class="install-note mono">On this demo the buttons fall back to the releases page, the same fallback the resolver uses in production. The mechanism is in <code>download/README.md</code>.</p>
+      </div>
+    </section>
+
+    <!-- =============================== FAQ ============================== -->
+    <section class="section rule" id="faq">
+      <div class="wrap faq-grid">
+        <div class="faq-head">
+          <h2>Things you might ask.</h2>
+          <p>Something else? Open an issue on <a href="https://github.com/mafhper/landing-starter/issues" target="_blank" rel="noopener">GitHub</a>.</p>
+        </div>
+        <div class="faq-list">
+          <details class="faq-item">
+            <summary class="faq-q"><span>Where do my notes live?</span><span class="faq-chev" aria-hidden="true">+</span></summary>
+            <div class="faq-a"><p>In a folder on your disk, as plain .md files. The app is a viewer and an editor, not a vault.</p></div>
+          </details>
+          <details class="faq-item">
+            <summary class="faq-q"><span>Do you collect any data?</span><span class="faq-chev" aria-hidden="true">+</span></summary>
+            <div class="faq-a"><p>No account and no telemetry. The app never phones home, and the website is a static page.</p></div>
+          </details>
+          <details class="faq-item">
+            <summary class="faq-q"><span>How do updates work?</span><span class="faq-chev" aria-hidden="true">+</span></summary>
+            <div class="faq-a"><p>Updates are manual and signed: the app points you at the latest release and you decide when to install.</p></div>
+          </details>
+          <details class="faq-item">
+            <summary class="faq-q"><span>What platforms are supported?</span><span class="faq-chev" aria-hidden="true">+</span></summary>
+            <div class="faq-a"><p>macOS 13+, Windows 10+ and modern Linux, on both arm64 and x86_64.</p></div>
+          </details>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="rule">
+    <div class="wrap">
+      <div class="foot-grid">
+        <div class="foot-brand">
+          <div class="brand"><span class="brand-mark" aria-hidden="true"></span><span>Demo Notes</span></div>
+          <p>A local-first notes app for people who do not want an account.</p>
+        </div>
+        <div class="foot-col">
+          <h5>Product</h5>
+          <a href="#features">Features</a>
+          <a href="#download">Download</a>
+          <a href="#faq">FAQ</a>
+        </div>
+        <div class="foot-col">
+          <h5>Resources</h5>
+          <a href="https://github.com/mafhper/landing-starter" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://github.com/mafhper/landing-starter/releases" target="_blank" rel="noopener">Releases</a>
+        </div>
+        <div class="foot-col">
+          <h5>Community</h5>
+          <a href="https://github.com/mafhper/landing-starter/issues" target="_blank" rel="noopener">Issues</a>
+        </div>
+      </div>
+      <div class="foot-bot">
+        <span>&copy; <span id="year">2026</span> Demo Notes</span>
+        <span class="mono">MIT / Apache-2.0</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/app.js"></script>
+</body>
+</html>
