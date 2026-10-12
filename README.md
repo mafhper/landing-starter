@@ -85,9 +85,14 @@ o template e os scripts do repo nao vao para o site.
 
 Padrao destilado da analise de `openlogi.org`: navbar subtrativa, tokens
 escopados por pagina, download server-side com Client Hints e o release do
-repo original **empurrando** a versao via `repository_dispatch`. Nenhum
-codigo do site original foi copiado — o template e uma recriacao
-independente, com testes proprios.
+repo original **empurrando** a versao via `repository_dispatch`.
+
+As ilustracoes isometricas dos cards usam o kernel do `iso-figure`
+(ai-iso-skill, MIT): projecao 30 graus via `matrix()`, oclusao por ordem de
+pintura e `non-scaling-stroke` — ajustado ao design system da pagina (faces
+nos tokens do tema, accent no elemento "vivo", hover que explode a pilha,
+faz o pulso viajar no arco e o selo flutuar; tudo desligado sob
+`prefers-reduced-motion`). Nenhum markup do site original foi copiado.
 
 ## Licenca
 

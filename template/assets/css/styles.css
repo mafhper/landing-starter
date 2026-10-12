@@ -43,6 +43,11 @@
   --hairline: #e5e8ed;
   --hairline-strong: #d3d8e0;
 
+  /* Ilustracoes isometricas: tres tons de face (topo, direita, esquerda) */
+  --iso-top: #fafbfd;
+  --iso-right: #eef1f6;
+  --iso-left: #e2e7ef;
+
   /* Raios: um conjunto fechado, cada componente pega um degrau */
   --r-xs: 4px;
   --r-sm: 6px;
@@ -80,6 +85,11 @@
 
   --hairline: #1e222c;
   --hairline-strong: #2c3140;
+
+  /* Ilustracoes isometricas no escuro */
+  --iso-top: #1a1e28;
+  --iso-right: #12151c;
+  --iso-left: #0c0e14;
 }
 
 /* --------------------------------------------------------------------------
@@ -432,7 +442,57 @@ h1, h2, h3, h4, p, figure { margin: 0; }
   background-color: color-mix(in srgb, var(--band) 72%, var(--canvas));
   overflow: hidden;
 }
-.card-well svg { width: 100%; max-width: 320px; height: auto; margin: 0 auto; }
+.card-well svg { height: 178px; width: auto; max-width: 100%; margin: 0 auto; display: block; }
+
+/* Ilustracoes isometricas dos cards (kernel do iso-figure: cada face e um
+   rect em coordenadas locais colocado no plano por matrix(), projecao 30
+   graus; a oclusao e ordem de pintura, e o non-scaling-stroke mantem a
+   hairline de 1px sob o transform). */
+.card-well .iso-face {
+  fill: var(--iso-right);
+  stroke: var(--hairline-strong);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+  stroke-linejoin: round;
+}
+.card-well .iso-face.f-top { fill: var(--iso-top); }
+.card-well .iso-face.f-left { fill: var(--iso-left); }
+.card-well .iso-mark {
+  fill: none;
+  stroke: var(--hairline-strong);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+.card-well .iso-tick { fill: var(--hairline-strong); }
+.card-well .iso-live {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 1.25;
+  vector-effect: non-scaling-stroke;
+}
+.card-well .iso-live-fill { fill: var(--accent); }
+.card-well .iso-label { fill: var(--accent); font-family: var(--font-mono); letter-spacing: .04em; }
+
+/* Interacao (hover no card). A propria geometria iso dita o movimento:
+   z puro projeta vertical, entao o "explode" da pilha e translateY; o pulso
+   viaja pelo arco via offset-path; o selo sobe. */
+.card-well .iso-plate,
+.card-well .iso-float { transition: transform .28s cubic-bezier(.2, .7, .2, 1); }
+.card:hover .iso-plate { transform: translateY(calc(var(--lift, 6px) * -1)); }
+.card:hover .iso-float { transform: translateY(-7px); }
+.card-well .iso-pulse { offset-distance: 50%; }
+.card:hover .iso-pulse { animation: iso-travel 1.5s linear infinite; }
+@keyframes iso-travel {
+  from { offset-distance: 0%; }
+  to { offset-distance: 100%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .card-well .iso-plate,
+  .card-well .iso-float { transition: none; }
+  .card:hover .iso-plate,
+  .card:hover .iso-float { transform: none; }
+  .card:hover .iso-pulse { animation: none; }
+}
 
 .card-body { padding: 20px 26px 26px; }
 .card h3 { font-size: 17px; font-weight: 600; letter-spacing: -0.015em; margin-bottom: 8px; }
@@ -452,8 +512,10 @@ h1, h2, h3, h4, p, figure { margin: 0; }
 .install-os { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
 .os-mark { width: 20px; height: 20px; color: var(--ink); flex: none; }
 .install-card h3 { font-size: 17px; font-weight: 600; letter-spacing: -0.015em; }
-.install-card p { margin-top: 6px; color: var(--muted); font-size: 14.5px; text-wrap: pretty; }
-.install-dl { align-self: flex-start; margin-top: 18px; }
+.install-card p { margin: 6px 0 18px; color: var(--muted); font-size: 14.5px; text-wrap: pretty; }
+/* o botao fica ancorado no fundo do card: os tres alinham entre si mesmo
+   se a descricao ocupar mais linhas em uma largura intermediaria */
+.install-dl { align-self: flex-start; margin-top: auto; }
 
 .install-note {
   margin-top: 20px;
