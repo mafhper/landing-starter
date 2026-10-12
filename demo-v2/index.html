@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en" data-repo="mafhper/landing-starter">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Demo Notes</title>
+  <meta name="description" content="A local-first notes app for people who do not want an account." />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Demo Notes" />
+  <meta property="og:description" content="A local-first notes app for people who do not want an account." />
+  <meta property="og:type" content="website" />
+
+  <!--
+    Anti-FOUC, dark-first: a Aurora nasce escura; o tema claro é escolha
+    explícita e este script a aplica antes do primeiro paint. Precisa ficar
+    inline e no <head> — como arquivo externo, a página pisca no tema errado.
+  -->
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem("theme");
+        document.documentElement.classList.toggle("light", t === "light");
+      } catch (e) {}
+    })();
+  </script>
+
+  <!-- Fontes self-hosted (OFL, licenças em assets/fonts/): preload evita
+       o flash de fallback no primeiro paint do hero. -->
+  <link rel="preload" href="assets/fonts/ZalandoSansSemiExpanded-variable.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="assets/fonts/GeistMono-variable.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+</head>
+<body>
+  <header class="nav" id="nav">
+    <div class="nav-inner">
+      <a class="brand" href="/">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span>Demo Notes</span>
+      </a>
+
+      <nav class="nav-links" aria-label="Primary">
+        <a href="#features">Features</a>
+        <a href="#interface">Interface</a>
+        <a href="#download">Download</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+
+      <div class="nav-right">
+        <a class="nav-gh" href="https://github.com/mafhper/landing-starter" target="_blank" rel="noopener" aria-label="GitHub repository">
+          <svg viewBox="0 0 16 16" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.42 7.42 0 0 1 4 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
+        </a>
+
+        <button type="button" class="icon-btn" id="theme-toggle" aria-label="Toggle theme" title="Toggle theme">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <g class="icon-sun"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></g>
+            <path class="icon-moon" d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
+          </svg>
+        </button>
+
+        <a class="btn btn-primary" href="#download">Download</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- ============================== HERO ============================== -->
+    <section class="hero">
+      <div class="hero-aura" aria-hidden="true"></div>
+
+      <div class="wrap hero-inner">
+        <span class="hero-spec mono">
+          <b>v1.0.0</b>
+          <span class="sep">/</span>
+          <span>single page</span>
+          <span class="sep">/</span>
+          <span>no build</span>
+        </span>
+
+        <h1>Your product,<br /><span class="accent-word">in its best light.</span></h1>
+
+        <p class="lede">
+          Notes stay on disk. Plain HTML, CSS and JavaScript —
+          <b>no build, no dependencies, no tracking.</b>
+        </p>
+
+        <div class="cta-row">
+          <a class="btn btn-primary" href="#download">
+            <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
+            <span>Download</span>
+          </a>
+          <div class="brew" id="brew">
+            <span class="sigil">$</span>
+            <span class="brew-cmd">brew install --cask demo-notes</span>
+            <button type="button" class="copy-btn" data-copy="brew install --cask demo-notes" aria-label="Copy command"></button>
+          </div>
+        </div>
+
+        <p class="hero-foot">
+          <span class="foot-os-row">
+            <span class="foot-os">.dmg<span class="foot-tip mono">macOS</span></span>
+            <span class="foot-os">.deb / .rpm<span class="foot-tip mono">Linux</span></span>
+            <span class="foot-os">.msi<span class="foot-tip mono">Windows</span></span>
+          </span>
+          <span class="foot-lic mono">MIT / Apache-2.0</span>
+        </p>
+      </div>
+
+      <!-- O shot: moldura de navegador com um mock de produto feito em
+           HTML/CSS puro — nada de imagem. O halo atrás é o artefato-assinatura.
+           Tudo decoração: aria-hidden, textos são placeholders. -->
+      <div class="wrap shot-wrap">
+        <div class="shot">
+          <div class="shot-halo" aria-hidden="true"></div>
+
+          <figure class="frame" aria-hidden="true">
+            <div class="frame-bar">
+              <span class="frame-dots"><i></i><i></i><i></i></span>
+              <span class="frame-addr mono">app.example / workspace</span>
+              <span class="frame-live mono"><i></i>Live</span>
+            </div>
+
+            <div class="frame-body">
+              <aside class="f-rail">
+                <span class="f-item is-on"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m4 6 5 5-5 5"/><path d="M12 17h8"/></svg>Console</span>
+                <span class="f-item"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M9 9h6v6H9z"/></svg>Assets</span>
+                <span class="f-item"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><path d="m10 9 5 3-5 3z"/></svg>Runs</span>
+                <span class="f-item"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h9"/><circle cx="16.5" cy="8" r="2.5"/><path d="M4 16h3"/><circle cx="10.5" cy="16" r="2.5"/><path d="M16 16h4"/></svg>Settings</span>
+              </aside>
+
+              <div class="f-main">
+                <div class="f-msg">
+                  <span class="f-avatar"></span>
+                  <span class="f-bubble">Morning — where do we stand?</span>
+                </div>
+
+                <div class="f-card">
+                  <div class="f-card-head">
+                    <span class="f-dot"></span>
+                    <span class="f-card-title">Landing pass</span>
+                    <span class="chip ok">Added</span>
+                  </div>
+                  <div class="f-progress"><i></i></div>
+                  <div class="f-card-meta mono">4 sections · 2 themes · 0 dependencies</div>
+                </div>
+
+                <div class="f-msg f-msg-right">
+                  <span class="f-bubble f-bubble-accent">Ship it.</span>
+                </div>
+              </div>
+
+              <div class="f-side">
+                <span class="f-scene"><i class="f-moon"></i></span>
+                <span class="f-side-chips"><span class="chip">Preview</span><span class="chip ok">Live</span></span>
+                <span class="f-side-meta mono">night scene · 2 layers</span>
+              </div>
+            </div>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================ FEATURES ============================ -->
+    <section class="section rule" id="features">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="section-head-copy">
+            <h2>What it does.</h2>
+            <p>Each well is a mock built from tokens — swap one for a real capture when you have it, keep the grid when you don't.</p>
+          </div>
+          <span class="spec-line mono">spec / 01-04</span>
+        </div>
+
+        <div class="feat-grid">
+          <article class="card">
+            <div class="well">
+              <div class="mock mock-runs">
+                <div class="mr-row"><span class="mr-name">Draft the outline</span><span class="chip busy"><i class="dot"></i>Working</span></div>
+                <div class="mr-row"><span class="mr-name">Write the sections</span><span class="chip info">In review</span></div>
+                <div class="mr-row"><span class="mr-name">Polish the details</span><span class="chip ok">Added</span></div>
+                <div class="mr-meta mono">3 runs · one review gate</div>
+              </div>
+            </div>
+            <div class="card-body">
+              <h3>Feature one</h3>
+              <p>Say the outcome, not the mechanism. These rows and chips are placeholders — keep them honest, or swap in a real screenshot.</p>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="well">
+              <div class="mock mock-panel">
+                <div class="mp-search mono">Search extensions…</div>
+                <div class="mp-row">
+                  <span class="mp-mark"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 12h16M4 17h10"/></svg></span>
+                  <span class="mp-copy"><b>Formatter</b><i>Tidy output on save</i></span>
+                  <span class="sw is-on"></span>
+                </div>
+                <div class="mp-row">
+                  <span class="mp-mark"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg></span>
+                  <span class="mp-copy"><b>Exporter</b><i>Static bundle, any host</i></span>
+                  <span class="sw"></span>
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+              <h3>Feature two</h3>
+              <p>Rows with a name, one line and a switch read as a real product screen. Two rows beat five — this well is a drawing, not a data table.</p>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="well">
+              <div class="mock mock-conn">
+                <div class="mc-row"><span class="mc-mark">A</span><span class="mc-name">Account one</span><span class="chip ok">Connected</span></div>
+                <div class="mc-row"><span class="mc-mark">B</span><span class="mc-name">Account two</span><span class="chip ok">Connected</span></div>
+                <div class="mc-row"><span class="mc-mark">L</span><span class="mc-name">Local model</span><span class="mc-bar"><i></i></span><span class="mc-pct mono">62%</span></div>
+              </div>
+            </div>
+            <div class="card-body">
+              <h3>Feature three</h3>
+              <p>Connections look real when they show state: connected, syncing, done. The percentages here are placeholders — keep them plausible.</p>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="well">
+              <div class="mock mock-notes">
+                <div class="mn-path mono">notes/changelog.md</div>
+                <div class="mn-line mono">## 0.4.0 — night pass <span class="chip ok">Improved</span></div>
+                <div class="mn-line mono">- reworked the hero glow</div>
+                <div class="mn-line mono">- tightened the type scale <span class="chip">Unchanged</span></div>
+              </div>
+            </div>
+            <div class="card-body">
+              <h3>Feature four</h3>
+              <p>Show the work, not the promise: a short changelog proves the product moves. Mono type plus one badge is enough.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================ INTERFACE ============================ -->
+    <!-- Os ribbons (faixas borradas) e o diagrama são os artefatos desta seção:
+         tudo CSS/SVG, sem imagem, sem vídeo. -->
+    <section class="section int" id="interface">
+      <div class="ribbons" aria-hidden="true">
+        <span class="ribbon rb-l"></span>
+        <span class="ribbon rb-r"></span>
+      </div>
+
+      <div class="wrap int-inner">
+        <div class="int-head">
+          <span class="eyebrow mono">one interface</span>
+          <h2>One window for<br /><span class="accent-word">every moving piece.</span></h2>
+          <p class="int-lede">Chips, tiles and wires are placeholders: connect your real services and keep one language from hero to footer.</p>
+
+          <div class="chips">
+            <span class="chip-ico"><svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 1.8 14 5v6l-6 3.2L2 11V5z"/></svg>Models</span>
+            <span class="chip-ico"><svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="2.5" width="11" height="11" rx="2.5"/><path d="M6 8h4"/></svg>Assets</span>
+            <span class="chip-ico"><svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 1.5 3.5 9H7l-1 5.5L11.5 7H8z"/></svg>Automations</span>
+            <span class="chip-ico"><svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="6"/><path d="M2 8h12M8 2c2.2 2.6 2.2 9.4 0 12-2.2-2.6-2.2-9.4 0-12z"/></svg>Publishing</span>
+          </div>
+        </div>
+
+        <div class="icons" aria-hidden="true">
+          <span class="ico" style="--t-h:#6ea8fe"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="7"/></svg></span>
+          <span class="ico" style="--t-h:#8b7cf6"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5 19 17H5z"/></svg></span>
+          <span class="ico" style="--t-h:#f078a0"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="5" width="14" height="14" rx="3"/><circle cx="12" cy="12" r="2"/></svg></span>
+          <span class="ico" style="--t-h:#f0b45a"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 12c3-5 6 5 9 0s6 5 9 0"/></svg></span>
+          <span class="ico" style="--t-h:#4ec9a4"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5 19 8v8l-7 4.5L5 16V8z"/></svg></span>
+          <span class="ico" style="--t-h:#59b6e8"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 4v5M12 15v5M4 12h5M15 12h5"/></svg></span>
+        </div>
+        <span class="icons-cap mono">every piece you already use</span>
+
+        <div class="pipeline">
+          <span class="hub"><span class="brand-mark" aria-hidden="true"></span><span>Demo Notes</span></span>
+
+          <!-- Fiação do diagrama: puro SVG, stroke fino; os pontos nas pontas
+               "aterrissam" na grade de ferramentas abaixo. -->
+          <svg class="wires" viewBox="0 0 1200 140" preserveAspectRatio="none" aria-hidden="true">
+            <path class="w-faint" d="M600 26 C600 104 34 96 34 136"/>
+            <path class="w-faint" d="M600 26 C600 104 1166 96 1166 136"/>
+            <path d="M600 0 V 26"/>
+            <path d="M600 26 C600 94 150 80 150 136"/>
+            <path d="M600 26 C600 94 450 80 450 136"/>
+            <path d="M600 26 C600 94 750 80 750 136"/>
+            <path d="M600 26 C600 94 1050 80 1050 136"/>
+            <circle cx="600" cy="2.4" r="2.4"/>
+            <circle cx="150" cy="136" r="2"/>
+            <circle cx="450" cy="136" r="2"/>
+            <circle cx="750" cy="136" r="2"/>
+            <circle cx="1050" cy="136" r="2"/>
+          </svg>
+
+          <div class="tool-grid">
+            <span class="tool"><span class="tool-mark" style="--t-h:#6ea8fe"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="7"/></svg></span><span class="tool-copy"><b>Models</b><i class="mono">text · reasoning</i></span></span>
+            <span class="tool"><span class="tool-mark" style="--t-h:#8b7cf6"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5 19 17H5z"/></svg></span><span class="tool-copy"><b>Images</b><i class="mono">generate · edit</i></span></span>
+            <span class="tool"><span class="tool-mark" style="--t-h:#f078a0"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5 19 8v8l-7 4.5L5 16V8z"/></svg></span><span class="tool-copy"><b>Scenes</b><i class="mono">3D · blockouts</i></span></span>
+            <span class="tool"><span class="tool-mark" style="--t-h:#f0b45a"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 12c3-5 6 5 9 0s6 5 9 0"/></svg></span><span class="tool-copy"><b>Voice</b><i class="mono">speech · sound</i></span></span>
+            <span class="tool"><span class="tool-mark" style="--t-h:#4ec9a4"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><path d="m10 9 5 3-5 3z"/></svg></span><span class="tool-copy"><b>Clips</b><i class="mono">video · cuts</i></span></span>
+            <span class="tool"><span class="tool-mark" style="--t-h:#59b6e8"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4" width="14" height="16" rx="2.5"/><path d="M9 9h6M9 13h6"/></svg></span><span class="tool-copy"><b>Docs</b><i class="mono">notes · spec</i></span></span>
+            <span class="tool"><span class="tool-mark" style="--t-h:#e8a0b4"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 19V9M12 19V5M19 19v-7"/></svg></span><span class="tool-copy"><b>Data</b><i class="mono">sync · store</i></span></span>
+            <span class="tool"><span class="tool-mark" style="--t-h:#9ee08a"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"/><path d="m6 11 6-6 6 6"/></svg></span><span class="tool-copy"><b>Ship</b><i class="mono">deploy · share</i></span></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================ DOWNLOAD ============================ -->
+    <section class="section rule" id="download">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="section-head-copy">
+            <h2>Up and running in a minute.</h2>
+            <p>Signed builds for macOS, Linux and Windows. The buttons below resolve the latest release automatically.</p>
+          </div>
+          <span class="spec-line mono">.dmg / .deb / .msi</span>
+        </div>
+
+        <div class="card-grid card-grid-3">
+          <div class="install-card">
+            <div class="install-os"><svg class="os-mark" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.05 12.54c-.03-2.9 2.36-4.29 2.47-4.36-1.35-1.97-3.44-2.24-4.18-2.27-1.78-.18-3.47 1.05-4.37 1.05-.9 0-2.29-1.02-3.77-1-1.94.03-3.72 1.13-4.72 2.86-2.01 3.49-.51 8.66 1.45 11.49.96 1.39 2.1 2.94 3.6 2.89 1.45-.06 2-.93 3.75-.93 1.75 0 2.24.93 3.77.9 1.56-.03 2.55-1.41 3.5-2.81 1.1-1.61 1.56-3.17 1.58-3.25-.03-.02-3.03-1.16-3.06-4.6ZM14.2 4.06c.8-.97 1.33-2.31 1.19-3.65-1.15.05-2.53.77-3.35 1.73-.73.85-1.38 2.22-1.21 3.53 1.28.1 2.59-.65 3.37-1.61Z"/></svg><h3>macOS</h3></div>
+            <p>Signed and notarized .dmg for Apple Silicon and Intel, macOS 13+.</p>
+            <a class="btn btn-primary install-dl" href="https://github.com/mafhper/landing-starter/releases/latest" data-release-os="macos">Download .dmg</a>
+          </div>
+
+          <div class="install-card">
+            <div class="install-os"><svg class="os-mark" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M0 3.45 9.75 2.1v9.45H0m10.95-9.6L24 0v11.4H10.95M0 12.6h9.75v9.45L0 20.7M10.95 12.6H24V24l-12.9-1.8"/></svg><h3>Windows</h3></div>
+            <p>Portable .zip and per-user .msi installers, on x86_64 and arm64.</p>
+            <a class="btn btn-primary install-dl" href="https://github.com/mafhper/landing-starter/releases/latest" data-release-os="windows">Download .msi</a>
+          </div>
+
+          <div class="install-card">
+            <div class="install-os"><svg class="os-mark" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2c-1.7 0-3 1.7-3 4 0 .6.1 1.2.3 1.7C6.6 8.6 5 10.7 5 13.3c0 2.4 1.3 4.4 3.2 5.3.4 2 2 3.4 3.8 3.4s3.4-1.4 3.8-3.4c1.9-.9 3.2-2.9 3.2-5.3 0-2.6-1.6-4.7-4.3-5.6.2-.5.3-1.1.3-1.7 0-2.3-1.3-4-3-4Zm0 2c.6 0 1 1 1 2 0 .4 0 .7-.1 1.1-.3-.1-.6-.1-.9-.1s-.6 0-.9.1c-.1-.4-.1-.7-.1-1.1 0-1 .4-2 1-2Zm-1.9 14.6c.5.3 1.2.4 1.9.4s1.4-.1 1.9-.4c-.4.9-1.1 1.4-1.9 1.4s-1.5-.5-1.9-1.4Z"/></svg><h3>Linux</h3></div>
+            <p>Packages for amd64 and arm64: .deb, .rpm and Arch .pkg.tar.zst.</p>
+            <a class="btn btn-primary install-dl" href="https://github.com/mafhper/landing-starter/releases/latest" data-release-os="linux">Download .deb</a>
+          </div>
+        </div>
+
+        <p class="install-note mono">Each button queries the GitHub API and points at the latest release asset for its platform; if that fails it falls back to the releases page. The mechanism is in <code>download/README.md</code>.</p>
+      </div>
+    </section>
+
+    <!-- ============================== CTA ============================== -->
+    <section class="cta">
+      <div class="stars" aria-hidden="true"></div>
+      <div class="wrap cta-inner">
+        <h2>Ready when you are.</h2>
+        <p>Download the latest release, or take the template and make it unmistakably yours.</p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="#download">
+            <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></svg>
+            <span>Download</span>
+          </a>
+          <a class="btn btn-ghost" href="https://github.com/mafhper/landing-starter" target="_blank" rel="noopener">Star on GitHub</a>
+        </div>
+        <p class="cta-note mono">MIT / Apache-2.0 · no build · no dependencies</p>
+      </div>
+    </section>
+
+    <!-- =============================== FAQ ============================== -->
+    <section class="section rule" id="faq">
+      <div class="wrap faq-grid">
+        <div class="faq-head">
+          <h2>Things you might ask.</h2>
+          <p>Something else? Open an issue on <a href="https://github.com/mafhper/landing-starter/issues" target="_blank" rel="noopener">GitHub</a>.</p>
+        </div>
+        <div class="faq-list">
+          <details class="faq-item">
+            <summary class="faq-q"><span>Is it really free?</span><span class="faq-chev" aria-hidden="true">+</span></summary>
+            <div class="faq-a"><p>Say the license, then say what it costs to run. Honesty here buys trust everywhere else.</p></div>
+          </details>
+          <details class="faq-item">
+            <summary class="faq-q"><span>Do you collect any data?</span><span class="faq-chev" aria-hidden="true">+</span></summary>
+            <div class="faq-a"><p>If the answer is "no", make it specific: what never leaves the machine, and what (if anything) the website measures.</p></div>
+          </details>
+          <details class="faq-item">
+            <summary class="faq-q"><span>How do updates work?</span><span class="faq-chev" aria-hidden="true">+</span></summary>
+            <div class="faq-a"><p>Describe the update path in one sentence. If the app checks for updates, say how often and where it checks.</p></div>
+          </details>
+          <details class="faq-item">
+            <summary class="faq-q"><span>What platforms are supported?</span><span class="faq-chev" aria-hidden="true">+</span></summary>
+            <div class="faq-a"><p>List the platforms and the minimum versions. Update this answer the day a platform changes, not later.</p></div>
+          </details>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <div class="foot-grid">
+        <div class="foot-brand">
+          <div class="brand"><span class="brand-mark" aria-hidden="true"></span><span>Demo Notes</span></div>
+          <p>A local-first notes app for people who do not want an account.</p>
+        </div>
+        <div class="foot-col">
+          <h5>Product</h5>
+          <a href="#features">Features</a>
+          <a href="#interface">Interface</a>
+          <a href="#download">Download</a>
+          <a href="#faq">FAQ</a>
+        </div>
+        <div class="foot-col">
+          <h5>Resources</h5>
+          <a href="https://github.com/mafhper/landing-starter" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://github.com/mafhper/landing-starter/releases" target="_blank" rel="noopener">Releases</a>
+        </div>
+        <div class="foot-col">
+          <h5>Community</h5>
+          <a href="https://github.com/mafhper/landing-starter/issues" target="_blank" rel="noopener">Issues</a>
+        </div>
+      </div>
+      <div class="foot-bot">
+        <span>&copy; <span id="year">2026</span> Demo Notes</span>
+        <span class="mono">MIT / Apache-2.0</span>
+      </div>
+    </div>
+
+    <!-- Paisagem: três cristas em SVG puro; as cores são tokens (o tema
+         claro acompanha). Fecha a página como o horizonte da cena do shot. -->
+    <div class="landscape" aria-hidden="true">
+      <svg viewBox="0 0 1440 240" preserveAspectRatio="xMidYMax slice" focusable="false">
+        <path class="l3" d="M0 240V152L128 98l100 52 120-72 130 78 128-56 122 72 120-60 140 66 120-54 120 66 150-46 172 78v78Z"/>
+        <path class="l2" d="M0 240V190L150 142l136 46 144-44 148 50 138-46 148 52 140-42 150 50 144-40 162 52V240Z"/>
+        <path class="l1" d="M0 240v-28l180-40 164 34 176-40 168 38 182-42 178 40 186-36 206 44V240Z"/>
+      </svg>
+    </div>
+  </footer>
+
+  <script src="assets/js/app.js"></script>
+  <script type="module" src="assets/js/latest-release.mjs"></script>
+</body>
+</html>

@@ -1,0 +1,1389 @@
+/* ==========================================================================
+   landing-starter / Aurora — styles.css
+
+   A v2 do template: mesma disciplina da Classic (uma folha, sem framework,
+   sem build) com uma camada a mais de artefatos visuais: halo, moldura de
+   app, ribbons de gradiente, starfield, paisagem e grão — todos em CSS/SVG.
+
+   Ordem de leitura: fontes -> tokens -> base -> nav -> botões -> hero -> shot
+   -> mocks -> features -> interface (ribbons, diagrama) -> download -> cta
+   (starfield) -> faq -> footer (paisagem) -> grão -> breakpoints -> movimento.
+
+   Os três padrões que dão o caráter desta folha:
+   1. Dark-first: o tema escuro é o :root; o claro é a classe .light.
+   2. Artefatos por token: cada efeito (glow, ribbon, estrela, grão,
+      paisagem) tem um token de intensidade/cor — trocar o valor troca o
+      efeito sem tocar no layout.
+   3. Profundidade por luz: halo e hairline no lugar de sombra pesada.
+
+   Comentário do autor: os nomes de token são PAPEL, não matiz.
+   Trocar o valor troca o tema; trocar o papel quebra a hierarquia.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   0. FONTES (self-hosted, OFL — licenças em assets/fonts/)
+   Variáveis, um arquivo cada; o fallback de sistema cobre a janela do swap.
+   -------------------------------------------------------------------------- */
+
+@font-face {
+  font-family: "Zalando Sans SemiExpanded";
+  src: url("../fonts/ZalandoSansSemiExpanded-variable.woff2") format("woff2");
+  font-weight: 200 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Geist Mono";
+  src: url("../fonts/GeistMono-variable.woff2") format("woff2");
+  font-weight: 200 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* --------------------------------------------------------------------------
+   1. TOKENS — o tema escuro é o padrão; .light sobrescreve os mesmos papéis.
+   -------------------------------------------------------------------------- */
+
+:root {
+  /* Cor de marca. Ajuste o tom; todo acento/glow deriva dela. */
+  --accent: __ACCENT__;
+  --accent-hover: color-mix(in srgb, var(--accent) 86%, #fff);
+  --accent-soft: color-mix(in srgb, var(--accent) 16%, transparent);
+  --accent-ring: color-mix(in srgb, var(--accent) 60%, transparent);
+  --on-accent: #fff;
+
+  /* Escada de superfície: canvas (página) -> band (faixa) -> surface (card) */
+  --canvas: #07080c;
+  --band: #0a0c11;
+  --surface: #0e1016;
+  --surface-2: #131722;
+
+  /* Tinta: ink (texto forte) -> muted (corpo) -> faint (micro) */
+  --ink: #eef1f6;
+  --muted: #9aa3b2;
+  --faint: #67707f;
+
+  /* Fios */
+  --hairline: #1b1f29;
+  --hairline-strong: #2a3040;
+
+  /* Estados (chips dos mocks) */
+  --ok: #3ddba4;
+  --busy: #f5b04d;
+  --info: #78a9ff;
+
+  /* Artefatos — cor e intensidade moram aqui */
+  --glow-a: color-mix(in srgb, var(--accent) 58%, #7c5cff);
+  --glow-b: color-mix(in srgb, var(--accent) 28%, #c084fc);
+  --glow-op: .5;
+  --ribbon-op: .42;
+  --wire: color-mix(in srgb, var(--accent) 34%, var(--hairline-strong));
+  --star-a: rgba(255, 255, 255, .92);
+  --star-b: rgba(255, 255, 255, .5);
+  --grain-op: .05;
+  --land-1: #121622;
+  --land-2: #0c0f17;
+  --land-3: #080a11;
+  --moon: rgba(255, 244, 214, .9);
+
+  /* Raios: um conjunto fechado, cada componente pega um degrau */
+  --r-xs: 4px;
+  --r-sm: 7px;
+  --r-md: 10px;
+  --r-lg: 14px;
+  --r-xl: 18px;
+  --r-pill: 9999px;
+
+  /* Layout */
+  --maxw: 1180px;
+  --nav-h: 60px;
+
+  /* Tipografia — self-hosted com fallback de sistema. */
+  --font-sans: "Zalando Sans SemiExpanded", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+}
+
+.light {
+  --accent-hover: color-mix(in srgb, var(--accent) 88%, #000);
+  --accent-soft: color-mix(in srgb, var(--accent) 12%, transparent);
+  --on-accent: #fff;
+
+  --canvas: #fff;
+  --band: #f6f7fa;
+  --surface: #fff;
+  --surface-2: #f0f2f7;
+
+  --ink: #101319;
+  --muted: #545c6a;
+  --faint: #828b99;
+
+  --hairline: #e6e9ef;
+  --hairline-strong: #d2d7e0;
+
+  --ok: #0f9d6e;
+  --busy: #b7791f;
+  --info: #2f6fd6;
+
+  --glow-op: .34;
+  --ribbon-op: .3;
+  --wire: color-mix(in srgb, var(--accent) 24%, var(--hairline-strong));
+  --star-a: rgba(18, 26, 51, .5);
+  --star-b: rgba(18, 26, 51, .22);
+  --grain-op: .035;
+  --land-1: #e9ecf2;
+  --land-2: #dfe3ec;
+  --land-3: #d3d8e4;
+}
+
+/* --------------------------------------------------------------------------
+   2. BASE
+   -------------------------------------------------------------------------- */
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--canvas);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.55;
+  letter-spacing: -0.006em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: clip;
+}
+
+a { color: inherit; text-decoration: none; }
+img, svg { display: block; }
+h1, h2, h3, h4, p, figure { margin: 0; }
+
+::selection { background: color-mix(in srgb, var(--accent) 30%, transparent); }
+
+/* Âncoras: o offset é a altura da nav fixa + folga */
+[id] { scroll-margin-top: calc(var(--nav-h) + 16px); }
+
+.mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums; letter-spacing: 0; }
+
+.wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 32px; }
+
+.eyebrow {
+  display: inline-block;
+  font-size: 11.5px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+/* --------------------------------------------------------------------------
+   3. NAV — mesma disciplina da Classic: a responsividade é subtrativa,
+   em cada breakpoint some uma peça; nunca entra um hamburger.
+   -------------------------------------------------------------------------- */
+
+.nav {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 100;
+  background: color-mix(in srgb, var(--canvas) 72%, transparent);
+  -webkit-backdrop-filter: saturate(160%) blur(18px);
+  backdrop-filter: saturate(160%) blur(18px);
+  border-bottom: 1px solid transparent;
+  transition: border-color .2s, background .2s;
+}
+.nav.scrolled { border-bottom-color: var(--hairline); }
+
+.nav-inner {
+  height: var(--nav-h);
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 0 32px;
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  white-space: nowrap;
+  flex: none;
+}
+.brand-mark {
+  width: 22px; height: 22px;
+  border-radius: 30%;
+  background: linear-gradient(140deg, var(--accent), var(--glow-b));
+  box-shadow: 0 0 18px -4px color-mix(in srgb, var(--glow-a) 80%, transparent);
+  flex: none;
+}
+
+.nav-links { display: flex; gap: 2px; margin-left: 8px; }
+.nav-links a, .nav-gh {
+  padding: 6px 11px;
+  border-radius: var(--r-sm);
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 450;
+  white-space: nowrap;
+  transition: color .15s, background .15s;
+}
+.nav-links a:hover, .nav-gh:hover { color: var(--ink); }
+
+.nav-right { margin-left: auto; display: flex; align-items: center; gap: 6px; flex: none; }
+
+.nav-gh { display: inline-flex; align-items: center; justify-content: center; }
+
+.icon-btn {
+  width: 34px; height: 34px;
+  display: inline-flex; align-items: center; justify-content: center;
+  border: none; background: transparent;
+  border-radius: var(--r-md);
+  color: var(--muted);
+  cursor: pointer;
+  transition: color .15s, background .15s;
+}
+.icon-btn:hover { color: var(--ink); background: color-mix(in srgb, var(--ink) 7%, transparent); }
+
+/* O ícone troca com o tema: sol no escuro (clique -> claro). */
+.icon-moon { display: none; }
+.light .icon-sun { display: none; }
+.light .icon-moon { display: inline; }
+
+.nav .btn-primary { padding: 7px 14px; font-size: 14px; }
+
+/* --------------------------------------------------------------------------
+   4. BOTÕES
+   -------------------------------------------------------------------------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border: 1px solid transparent;
+  border-radius: var(--r-md);
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: -0.006em;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: transform .15s, background .15s, border-color .15s, color .15s;
+}
+.btn:active { transform: scale(.97); }
+.btn:focus-visible { outline: 2px solid var(--accent-ring); outline-offset: 2px; }
+
+.btn-primary { background: var(--accent); color: var(--on-accent); }
+.btn-primary:hover { background: var(--accent-hover); }
+
+.btn-ghost {
+  background: transparent;
+  border-color: var(--hairline-strong);
+  color: var(--ink);
+}
+.btn-ghost:hover { background: color-mix(in srgb, var(--ink) 6%, transparent); }
+
+/* --------------------------------------------------------------------------
+   5. HERO — o glow de fundo é um artefato de token (--glow-*), não imagem.
+   -------------------------------------------------------------------------- */
+
+.hero {
+  position: relative;
+  text-align: center;
+  padding: calc(var(--nav-h) + 88px) 0 108px;
+}
+
+.hero-aura {
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 640px;
+  overflow: hidden;
+  pointer-events: none;
+  background:
+    radial-gradient(58% 46% at 50% -6%, color-mix(in srgb, var(--glow-a) 42%, transparent), transparent 72%),
+    radial-gradient(34% 30% at 68% 22%, color-mix(in srgb, var(--glow-b) 26%, transparent), transparent 70%),
+    radial-gradient(30% 26% at 30% 16%, color-mix(in srgb, var(--glow-a) 20%, transparent), transparent 70%);
+  opacity: var(--glow-op);
+  -webkit-mask-image: linear-gradient(to bottom, #000 62%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 62%, transparent 100%);
+}
+
+.hero-inner { position: relative; z-index: 1; }
+
+.hero-spec {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 12.5px;
+  letter-spacing: .03em;
+  color: var(--muted);
+}
+.hero-spec b { color: var(--ink); font-weight: 500; }
+.hero-spec .sep { color: var(--faint); }
+
+.hero h1 {
+  margin: 22px 0 0;
+  font-size: clamp(40px, 6.4vw, 74px);
+  font-weight: 620;
+  letter-spacing: -0.028em;
+  line-height: 1.04;
+  text-wrap: balance;
+}
+
+.accent-word { color: var(--accent); }
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .accent-word {
+    background: linear-gradient(100deg, color-mix(in srgb, var(--accent) 88%, #fff) 0%, var(--accent) 42%, var(--glow-b) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+}
+
+.hero .lede {
+  margin: 22px auto 0;
+  max-width: 54ch;
+  font-size: clamp(16px, 2.1vw, 19px);
+  color: var(--muted);
+  text-wrap: pretty;
+}
+.hero .lede b { color: var(--ink); font-weight: 600; }
+
+.cta-row {
+  margin-top: 34px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Comando copiável: mono, com botão de copiar que vira .done no sucesso */
+.brew {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 7px 7px 14px;
+  border: 1px solid var(--hairline-strong);
+  border-radius: var(--r-md);
+  background: var(--surface-2);
+  font-family: var(--font-mono);
+  font-size: 13.5px;
+  color: var(--ink);
+}
+.brew .sigil { color: var(--accent); }
+.copy-btn {
+  width: 30px; height: 30px;
+  display: inline-flex; align-items: center; justify-content: center;
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-sm);
+  background: var(--surface);
+  color: var(--muted);
+  cursor: pointer;
+  transition: color .15s, background .15s, border-color .15s;
+}
+.copy-btn:hover { color: var(--ink); background: var(--surface-2); }
+.copy-btn.done { color: var(--accent); border-color: var(--accent); }
+.copy-btn svg { width: 15px; height: 15px; }
+
+.hero-foot {
+  margin-top: 26px;
+  color: var(--faint);
+  font-size: 13px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 8px 22px;
+}
+.foot-os-row { display: inline-flex; align-items: center; gap: 14px; }
+.foot-os { position: relative; cursor: default; }
+.foot-os .foot-tip {
+  position: absolute;
+  bottom: calc(100% + 9px);
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 5px 9px;
+  border: 1px solid var(--hairline-strong);
+  border-radius: var(--r-sm);
+  background: var(--surface-2);
+  color: var(--muted);
+  font-size: 12px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .15s;
+}
+.foot-os:hover .foot-tip,
+.foot-os:focus-visible .foot-tip { opacity: 1; }
+.foot-lic { font-size: 12.5px; }
+
+/* --------------------------------------------------------------------------
+   6. SHOT — a moldura de app do hero. O halo atrás é o artefato-assinatura;
+   o miolo é um mock de produto em HTML/CSS (sem imagem).
+   -------------------------------------------------------------------------- */
+
+.shot-wrap { position: relative; margin-top: 72px; }
+
+.shot { position: relative; max-width: 1020px; margin: 0 auto; }
+
+.shot-halo {
+  position: absolute;
+  inset: -12% -8% -18% -8%;
+  background:
+    radial-gradient(52% 52% at 50% 44%, color-mix(in srgb, var(--glow-a) 55%, transparent), transparent 72%),
+    radial-gradient(30% 34% at 74% 60%, color-mix(in srgb, var(--glow-b) 34%, transparent), transparent 70%);
+  filter: blur(46px);
+  opacity: calc(var(--glow-op) + .12);
+  pointer-events: none;
+}
+
+.frame {
+  position: relative;
+  z-index: 1;
+  text-align: left;
+  border: 1px solid var(--hairline-strong);
+  border-radius: var(--r-xl);
+  background: color-mix(in srgb, var(--surface) 94%, transparent);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .04),
+    0 34px 90px -44px rgba(0, 0, 0, .9);
+  overflow: hidden;
+}
+
+.frame-bar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  height: 44px;
+  padding: 0 16px;
+  border-bottom: 1px solid var(--hairline);
+  background: color-mix(in srgb, var(--band) 80%, var(--surface));
+}
+
+.frame-dots { display: inline-flex; gap: 6px; flex: none; }
+.frame-dots i {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--hairline-strong);
+}
+.frame-dots i:nth-child(1) { background: color-mix(in srgb, #d97b6c 76%, var(--hairline-strong)); }
+.frame-dots i:nth-child(2) { background: color-mix(in srgb, #d9b26a 76%, var(--hairline-strong)); }
+.frame-dots i:nth-child(3) { background: color-mix(in srgb, #7fbf8e 76%, var(--hairline-strong)); }
+
+.frame-addr {
+  flex: 1;
+  max-width: 320px;
+  margin: 0 auto;
+  padding: 4px 14px;
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-pill);
+  background: var(--surface-2);
+  color: var(--faint);
+  font-size: 11.5px;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.frame-live {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex: none;
+  font-size: 11.5px;
+  color: var(--muted);
+}
+.frame-live i {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--ok);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--ok) 70%, transparent);
+}
+
+.frame-body {
+  display: grid;
+  grid-template-columns: 170px 1fr 250px;
+  min-height: 392px;
+}
+
+/* Coluna esquerda: a rail de navegação do mock */
+.f-rail {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 18px 12px;
+  border-right: 1px solid var(--hairline);
+  background: color-mix(in srgb, var(--band) 62%, transparent);
+}
+.f-item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 8px 10px;
+  border-radius: var(--r-sm);
+  color: var(--muted);
+  font-size: 13px;
+}
+.f-item.is-on {
+  background: var(--accent-soft);
+  color: var(--ink);
+}
+.f-item svg { flex: none; opacity: .9; }
+
+/* Coluna central: a conversa/trabalho do mock */
+.f-main {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 24px 26px;
+  justify-content: flex-end;
+}
+
+.f-msg { display: flex; align-items: flex-end; gap: 10px; }
+.f-msg-right { justify-content: flex-end; }
+
+.f-avatar {
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  background: linear-gradient(140deg, var(--accent), var(--glow-b));
+  flex: none;
+}
+
+.f-bubble {
+  max-width: 74%;
+  padding: 9px 14px;
+  border-radius: 12px 12px 12px 4px;
+  background: var(--surface-2);
+  border: 1px solid var(--hairline);
+  font-size: 13.5px;
+  color: var(--ink);
+}
+.f-bubble-accent {
+  border-radius: 12px 12px 4px 12px;
+  background: var(--accent);
+  border-color: transparent;
+  color: var(--on-accent);
+}
+
+.f-card {
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-md);
+  background: color-mix(in srgb, var(--band) 66%, transparent);
+  padding: 14px 16px;
+}
+.f-card-head { display: flex; align-items: center; gap: 9px; }
+.f-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--info);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--info) 70%, transparent);
+  flex: none;
+}
+.f-card-title { font-size: 13.5px; font-weight: 550; margin-right: auto; }
+.f-progress {
+  margin-top: 12px;
+  height: 4px;
+  border-radius: var(--r-pill);
+  background: var(--surface-2);
+  overflow: hidden;
+}
+.f-progress i {
+  display: block;
+  height: 100%;
+  width: 72%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--accent), var(--glow-b));
+}
+.f-card-meta { margin-top: 10px; font-size: 11px; color: var(--faint); }
+
+/* Coluna direita: preview com a cena noturna em CSS */
+.f-side {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 18px;
+  border-left: 1px solid var(--hairline);
+  background: color-mix(in srgb, var(--band) 62%, transparent);
+}
+
+.f-scene {
+  position: relative;
+  display: block;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--r-md);
+  border: 1px solid var(--hairline-strong);
+  overflow: hidden;
+  background: linear-gradient(180deg, #232a4d 0%, #131735 44%, #0a0c1c 100%);
+}
+.f-scene::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 72% 26%, color-mix(in srgb, var(--moon) 90%, transparent), transparent 42%);
+}
+.f-scene::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 62%;
+  background: #070910;
+  clip-path: polygon(0 82%, 13% 46%, 29% 74%, 45% 30%, 63% 68%, 79% 40%, 100% 76%, 100% 100%, 0 100%);
+}
+.f-moon {
+  position: absolute;
+  top: 22%;
+  right: 24%;
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--moon);
+  box-shadow: 0 0 18px 4px color-mix(in srgb, var(--moon) 55%, transparent);
+}
+
+.f-side-chips { display: flex; gap: 6px; }
+.f-side-meta { font-size: 11px; color: var(--faint); }
+
+/* --------------------------------------------------------------------------
+   7. MOCKS — peças compartilhadas entre o shot e os cards de feature.
+   -------------------------------------------------------------------------- */
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--hairline);
+  background: var(--surface-2);
+  color: var(--muted);
+  font-size: 11.5px;
+  font-weight: 520;
+  letter-spacing: -0.004em;
+  white-space: nowrap;
+}
+.chip.ok {
+  color: var(--ok);
+  border-color: color-mix(in srgb, var(--ok) 32%, transparent);
+  background: color-mix(in srgb, var(--ok) 11%, transparent);
+}
+.chip.busy {
+  color: var(--busy);
+  border-color: color-mix(in srgb, var(--busy) 32%, transparent);
+  background: color-mix(in srgb, var(--busy) 11%, transparent);
+}
+.chip.info {
+  color: var(--info);
+  border-color: color-mix(in srgb, var(--info) 32%, transparent);
+  background: color-mix(in srgb, var(--info) 11%, transparent);
+}
+.chip .dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  animation: chip-pulse 2.2s ease-in-out infinite;
+}
+@keyframes chip-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: .35; }
+}
+
+/* --------------------------------------------------------------------------
+   8. FEATURES — grid 2x2 com wells de mock. Os cards são superfícies
+   leves; o well é o palco da prova.
+   -------------------------------------------------------------------------- */
+
+.section { padding: 96px 0; position: relative; }
+
+.rule { border-top: 1px solid var(--hairline); }
+@media (min-width: 1024px) {
+  .rule::before, .rule::after {
+    content: "+";
+    position: absolute;
+    top: 0;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 0;
+    color: var(--hairline-strong);
+    transform: translateY(-0.5px);
+    pointer-events: none;
+    user-select: none;
+  }
+  .rule::before { left: 0; transform: translate(-50%, -0.5px); }
+  .rule::after { right: 0; transform: translate(50%, -0.5px); }
+}
+
+.section-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 32px;
+  margin-bottom: 56px;
+}
+.section-head-copy { max-width: 640px; }
+.section-head h2 {
+  margin: 0 0 14px;
+  font-size: clamp(28px, 3.6vw, 40px);
+  font-weight: 620;
+  letter-spacing: -0.024em;
+  line-height: 1.1;
+  text-wrap: balance;
+}
+.section-head p { color: var(--muted); font-size: clamp(16px, 1.8vw, 18px); text-wrap: pretty; }
+
+.spec-line {
+  flex: none;
+  padding-bottom: 6px;
+  font-size: 12px;
+  letter-spacing: .04em;
+  color: var(--faint);
+  white-space: nowrap;
+}
+
+.feat-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-xl);
+  background: color-mix(in srgb, var(--surface) 58%, transparent);
+  overflow: hidden;
+  transition: transform .22s cubic-bezier(.2, .7, .2, 1), border-color .22s, background .22s;
+}
+.card:hover {
+  transform: translateY(-2px);
+  border-color: var(--hairline-strong);
+  background: color-mix(in srgb, var(--surface) 82%, transparent);
+}
+
+.well {
+  display: grid;
+  align-content: center;
+  gap: 9px;
+  min-height: 252px;
+  padding: 26px;
+  border-bottom: 1px solid var(--hairline);
+  background:
+    radial-gradient(120% 90% at 50% -10%, color-mix(in srgb, var(--glow-a) 9%, transparent), transparent 70%),
+    color-mix(in srgb, var(--band) 82%, var(--canvas));
+}
+
+.card-body { padding: 20px 26px 24px; }
+.card h3 { font-size: 17px; font-weight: 620; letter-spacing: -0.015em; margin-bottom: 8px; }
+.card p { color: var(--muted); font-size: 14.5px; text-wrap: pretty; }
+
+/* 8a. Mock "runs": linhas com status */
+.mock { display: grid; gap: 9px; }
+.mr-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 9px 13px;
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-md);
+  background: color-mix(in srgb, var(--surface) 78%, transparent);
+}
+.mr-name { font-size: 13.5px; color: color-mix(in srgb, var(--ink) 84%, transparent); }
+.mr-meta { font-size: 11px; color: var(--faint); padding-left: 3px; }
+
+/* 8b. Mock "painel": busca + linhas com switch */
+.mp-search {
+  padding: 9px 13px;
+  border: 1px dashed var(--hairline-strong);
+  border-radius: var(--r-md);
+  color: var(--faint);
+  font-size: 12.5px;
+}
+.mp-row {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 10px 13px;
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-md);
+  background: color-mix(in srgb, var(--surface) 78%, transparent);
+}
+.mp-mark {
+  width: 28px; height: 28px;
+  display: grid; place-items: center;
+  border: 1px solid var(--hairline-strong);
+  border-radius: 9px;
+  background: var(--surface-2);
+  color: var(--muted);
+  flex: none;
+}
+.mp-copy { display: grid; gap: 1px; margin-right: auto; min-width: 0; }
+.mp-copy b { font-size: 13px; font-weight: 550; }
+.mp-copy i { font-style: normal; font-size: 11.5px; color: var(--faint); }
+
+.sw {
+  position: relative;
+  width: 32px; height: 18px;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--hairline-strong);
+  background: var(--surface-2);
+  flex: none;
+}
+.sw::after {
+  content: "";
+  position: absolute;
+  top: 2px; left: 2px;
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  background: var(--muted);
+  transition: transform .15s;
+}
+.sw.is-on { background: var(--accent); border-color: transparent; }
+.sw.is-on::after { transform: translateX(14px); background: var(--on-accent); }
+
+/* 8c. Mock "conexões": contas + barra de progresso */
+.mc-row {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 9px 13px;
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-md);
+  background: color-mix(in srgb, var(--surface) 78%, transparent);
+}
+.mc-mark {
+  width: 28px; height: 28px;
+  display: grid; place-items: center;
+  border-radius: 50%;
+  background: linear-gradient(140deg, var(--accent-soft), var(--surface-2));
+  border: 1px solid var(--hairline-strong);
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: color-mix(in srgb, var(--accent) 70%, var(--ink));
+  flex: none;
+}
+.mc-name { font-size: 13.5px; margin-right: auto; }
+.mc-bar {
+  width: 86px; height: 5px;
+  border-radius: var(--r-pill);
+  background: var(--surface-2);
+  overflow: hidden;
+  flex: none;
+}
+.mc-bar i {
+  display: block;
+  height: 100%;
+  width: 62%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--accent), var(--glow-b));
+}
+.mc-pct { font-size: 11px; color: var(--faint); flex: none; }
+
+/* 8d. Mock "changelog": mono com badges */
+.mn-path { font-size: 11.5px; color: var(--faint); padding-left: 2px; }
+.mn-line {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 12px;
+  border-radius: var(--r-sm);
+  background: color-mix(in srgb, var(--surface) 78%, transparent);
+  border: 1px solid var(--hairline);
+  font-size: 12px;
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+}
+.mn-line:nth-child(2) {
+  background: color-mix(in srgb, var(--accent) 9%, transparent);
+  border-color: color-mix(in srgb, var(--accent) 26%, transparent);
+  color: var(--ink);
+}
+
+/* --------------------------------------------------------------------------
+   9. INTERFACE — a seção-showcase: ribbons de gradiente ao fundo, chips de
+   categoria, fileira de ícones, hub e o diagrama de ferramentas conectadas.
+   Tudo artefato: CSS para as faixas, SVG para a fiação. Sem imagem.
+   -------------------------------------------------------------------------- */
+
+.int { position: relative; overflow: hidden; }
+
+.ribbons {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.ribbon {
+  position: absolute;
+  top: 4%;
+  width: 54%;
+  height: 320px;
+  border-radius: 50%;
+  background: linear-gradient(95deg, transparent 0%, var(--glow-a) 42%, var(--glow-b) 72%, transparent 100%);
+  filter: blur(72px) saturate(135%);
+  opacity: var(--ribbon-op);
+  animation: ribbon-drift 22s ease-in-out infinite alternate;
+}
+.rb-l { left: -17%; transform: rotate(-7deg); }
+.rb-r { right: -17%; transform: rotate(7deg); animation-delay: -11s; }
+@keyframes ribbon-drift {
+  from { translate: 0 -16px; }
+  to { translate: 0 20px; }
+}
+
+.int-inner { position: relative; z-index: 1; }
+
+.int-head { text-align: center; max-width: 720px; margin: 0 auto; }
+.int-head h2 {
+  margin: 16px 0 0;
+  font-size: clamp(30px, 4.2vw, 46px);
+  font-weight: 620;
+  letter-spacing: -0.026em;
+  line-height: 1.08;
+  text-wrap: balance;
+}
+.int-lede {
+  margin: 18px auto 0;
+  max-width: 56ch;
+  color: var(--muted);
+  font-size: clamp(15px, 1.8vw, 17px);
+  text-wrap: pretty;
+}
+
+.chips {
+  margin-top: 26px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+.chip-ico {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 15px;
+  border: 1px solid var(--hairline-strong);
+  border-radius: var(--r-pill);
+  background: color-mix(in srgb, var(--surface-2) 74%, transparent);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--muted);
+}
+.chip-ico svg { color: color-mix(in srgb, var(--accent) 72%, var(--ink)); }
+
+/* Fileira de ícones: tiles coloridos por --t-h; decoração pura. */
+.icons {
+  margin-top: 46px;
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+}
+.ico {
+  width: 48px; height: 48px;
+  display: grid; place-items: center;
+  border: 1px solid var(--hairline-strong);
+  border-radius: 15px;
+  background: linear-gradient(160deg, color-mix(in srgb, var(--t-h) 26%, var(--surface-2)), var(--surface-2) 78%);
+  color: color-mix(in srgb, var(--t-h) 62%, var(--ink));
+  box-shadow: 0 14px 34px -18px color-mix(in srgb, var(--t-h) 65%, transparent);
+}
+.icons-cap {
+  display: block;
+  margin-top: 16px;
+  text-align: center;
+  font-size: 11px;
+  letter-spacing: .06em;
+  color: var(--faint);
+}
+
+/* Diagrama: hub -> fiação -> grade de ferramentas */
+.pipeline { margin-top: 34px; text-align: center; }
+
+.hub {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 20px;
+  border: 1px solid var(--hairline-strong);
+  border-radius: var(--r-pill);
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
+  box-shadow: 0 18px 44px -22px color-mix(in srgb, var(--glow-a) 70%, transparent);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.012em;
+}
+.hub .brand-mark { width: 18px; height: 18px; }
+
+.wires {
+  display: block;
+  width: min(100%, 980px);
+  height: 132px;
+  margin: 8px auto 0;
+}
+.wires path {
+  fill: none;
+  stroke: var(--wire);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+.wires .w-faint { opacity: .45; }
+.wires circle { fill: color-mix(in srgb, var(--accent) 55%, var(--hairline-strong)); }
+
+.tool-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  max-width: 980px;
+  margin: 18px auto 0;
+  text-align: left;
+}
+.tool {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 12px 14px;
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-md);
+  background: color-mix(in srgb, var(--surface) 62%, transparent);
+  transition: border-color .18s, background .18s, transform .18s cubic-bezier(.2, .7, .2, 1);
+}
+.tool:hover {
+  transform: translateY(-1px);
+  border-color: var(--hairline-strong);
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
+}
+.tool-mark {
+  width: 30px; height: 30px;
+  display: grid; place-items: center;
+  border: 1px solid var(--hairline-strong);
+  border-radius: 10px;
+  background: linear-gradient(160deg, color-mix(in srgb, var(--t-h) 24%, var(--surface-2)), var(--surface-2) 80%);
+  color: color-mix(in srgb, var(--t-h) 58%, var(--ink));
+  flex: none;
+}
+.tool-copy { display: grid; gap: 0; min-width: 0; }
+.tool-copy b { font-size: 13.5px; font-weight: 570; }
+.tool-copy i { font-style: normal; font-size: 10.5px; color: var(--faint); }
+
+/* --------------------------------------------------------------------------
+   10. DOWNLOAD — os cards de OS. Os botões resolvem o último release no
+   cliente (assets/js/latest-release.mjs, Nível 1.5 — ver download/README.md).
+   -------------------------------------------------------------------------- */
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--hairline);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+}
+
+.install-card {
+  display: flex;
+  flex-direction: column;
+  padding: 26px 24px;
+  background: var(--canvas);
+}
+.install-os { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+.os-mark { width: 20px; height: 20px; color: var(--ink); flex: none; }
+.install-card h3 { font-size: 17px; font-weight: 620; letter-spacing: -0.015em; }
+.install-card p { margin: 6px 0 18px; color: var(--muted); font-size: 14.5px; text-wrap: pretty; }
+/* o botão fica ancorado no fundo do card: os três alinham entre si mesmo
+   se a descrição ocupar mais linhas em uma largura intermediaria */
+.install-dl { align-self: flex-start; margin-top: auto; }
+
+.install-note {
+  margin-top: 20px;
+  font-size: 12.5px;
+  color: var(--faint);
+  text-align: center;
+}
+.install-note code {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  padding: 2px 6px;
+  border-radius: var(--r-xs);
+  background: color-mix(in srgb, var(--ink) 6%, transparent);
+  color: var(--ink);
+}
+
+/* --------------------------------------------------------------------------
+   11. CTA — a faixa com starfield. As estrelas são duas camadas de
+   radial-gradients repetidos (tiles), com deriva lenta; sob reduced motion,
+   ficam paradas. O tom das estrelas é token (--star-*), então o tema claro
+   acompanha.
+   -------------------------------------------------------------------------- */
+
+.cta {
+  position: relative;
+  overflow: hidden;
+  padding: 116px 0 122px;
+  text-align: center;
+  border-top: 1px solid var(--hairline);
+  background:
+    radial-gradient(60% 70% at 50% 118%, color-mix(in srgb, var(--glow-a) 24%, transparent), transparent 70%),
+    var(--band);
+}
+
+.stars { position: absolute; inset: 0; pointer-events: none; }
+.stars::before,
+.stars::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+.stars::before {
+  background-image:
+    radial-gradient(1.4px 1.4px at 42px 66px, var(--star-a), transparent 100%),
+    radial-gradient(1px 1px at 156px 24px, var(--star-b), transparent 100%),
+    radial-gradient(1.6px 1.6px at 268px 148px, var(--star-a), transparent 100%),
+    radial-gradient(1px 1px at 218px 296px, var(--star-b), transparent 100%),
+    radial-gradient(1.2px 1.2px at 82px 224px, var(--star-a), transparent 100%),
+    radial-gradient(1px 1px at 336px 64px, var(--star-b), transparent 100%),
+    radial-gradient(1.5px 1.5px at 384px 232px, var(--star-a), transparent 100%),
+    radial-gradient(1px 1px at 300px 352px, var(--star-b), transparent 100%),
+    radial-gradient(1.2px 1.2px at 128px 384px, var(--star-a), transparent 100%),
+    radial-gradient(1px 1px at 30px 330px, var(--star-b), transparent 100%);
+  background-size: 420px 420px;
+  animation: star-drift 140s linear infinite;
+}
+.stars::after {
+  background-image:
+    radial-gradient(1.8px 1.8px at 60px 90px, var(--star-a), transparent 100%),
+    radial-gradient(1.2px 1.2px at 320px 60px, var(--star-b), transparent 100%),
+    radial-gradient(1.4px 1.4px at 180px 260px, var(--star-a), transparent 100%),
+    radial-gradient(1px 1px at 420px 210px, var(--star-b), transparent 100%),
+    radial-gradient(1.6px 1.6px at 500px 130px, var(--star-a), transparent 100%),
+    radial-gradient(1px 1px at 260px 470px, var(--star-b), transparent 100%),
+    radial-gradient(1.3px 1.3px at 540px 400px, var(--star-a), transparent 100%);
+  background-size: 620px 620px;
+  opacity: .62;
+  animation: star-drift-lg 220s linear infinite reverse;
+}
+@keyframes star-drift {
+  from { background-position: 0 0; }
+  to { background-position: 420px 420px; }
+}
+@keyframes star-drift-lg {
+  from { background-position: 0 0; }
+  to { background-position: 620px 620px; }
+}
+
+.cta-inner { position: relative; z-index: 1; }
+.cta h2 {
+  font-size: clamp(32px, 4.6vw, 52px);
+  font-weight: 620;
+  letter-spacing: -0.028em;
+  line-height: 1.06;
+  text-wrap: balance;
+}
+.cta p {
+  margin: 18px auto 0;
+  max-width: 48ch;
+  color: var(--muted);
+  font-size: clamp(15px, 1.9vw, 17.5px);
+  text-wrap: pretty;
+}
+.cta .cta-row { margin-top: 30px; }
+.cta-note {
+  margin-top: 26px;
+  font-size: 11.5px;
+  letter-spacing: .05em;
+  color: var(--faint);
+}
+
+/* --------------------------------------------------------------------------
+   12. FAQ — <details> nativo. Zero JS.
+   -------------------------------------------------------------------------- */
+
+.faq-grid { display: grid; grid-template-columns: .8fr 1.2fr; gap: 64px; align-items: start; }
+.faq-head h2 {
+  margin: 0 0 16px;
+  font-size: clamp(28px, 3.6vw, 40px);
+  font-weight: 620;
+  letter-spacing: -0.024em;
+  line-height: 1.1;
+  text-wrap: balance;
+}
+.faq-head p { color: var(--muted); font-size: 15px; max-width: 34ch; text-wrap: pretty; }
+.faq-head a { color: var(--accent); }
+.faq-head a:hover { text-decoration: underline; }
+
+.faq-list { border-top: 1px solid var(--hairline); }
+.faq-item { border-bottom: 1px solid var(--hairline); }
+.faq-q {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 22px 4px;
+  list-style: none;
+  cursor: pointer;
+  font-size: 17px;
+  font-weight: 620;
+  letter-spacing: -0.012em;
+}
+.faq-q::-webkit-details-marker { display: none; }
+.faq-chev { color: var(--muted); transition: transform .2s; font-family: var(--font-mono); }
+.faq-item[open] .faq-chev { transform: rotate(45deg); }
+.faq-a { padding: 0 4px 24px; color: var(--muted); font-size: 15.5px; text-wrap: pretty; }
+
+/* --------------------------------------------------------------------------
+   13. FOOTER + PAISAGEM — as cristas fecham a página como o horizonte da
+   cena do shot; as cores são tokens (--land-*), então o tema claro acompanha.
+   -------------------------------------------------------------------------- */
+
+footer {
+  position: relative;
+  border-top: 1px solid var(--hairline);
+  padding: 72px 0 0;
+  overflow: hidden;
+}
+.foot-grid { display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr; gap: 40px; }
+.foot-brand p { margin-top: 14px; max-width: 300px; color: var(--muted); font-size: 14px; text-wrap: pretty; }
+.foot-col h5 {
+  margin: 0 0 12px;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-weight: 500;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+.foot-col a { display: block; padding: 6px 0; color: var(--muted); font-size: 14.5px; transition: color .15s; }
+.foot-col a:hover { color: var(--accent); }
+
+.foot-bot {
+  margin-top: 52px;
+  padding-top: 24px;
+  border-top: 1px solid var(--hairline);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.landscape {
+  position: relative;
+  margin-top: 56px;
+  pointer-events: none;
+}
+.landscape::before {
+  content: "";
+  position: absolute;
+  inset: -60% 0 auto 0;
+  height: 190%;
+  background: radial-gradient(46% 58% at 50% 76%, color-mix(in srgb, var(--glow-a) 30%, transparent), transparent 72%);
+  opacity: calc(var(--glow-op) + .06);
+}
+.landscape svg { width: 100%; height: clamp(140px, 20vw, 240px); }
+.landscape .l3 { fill: var(--land-3); }
+.landscape .l2 { fill: var(--land-2); }
+.landscape .l1 { fill: var(--land-1); }
+
+/* --------------------------------------------------------------------------
+   14. GRÃO — textura fixa sobre a página inteira. É um data-URI SVG de
+   feTurbulence (um tile), sem filtro ao vivo: custo de pintura uma vez.
+   -------------------------------------------------------------------------- */
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 130;
+  pointer-events: none;
+  opacity: var(--grain-op);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='260' height='260' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 260px 260px;
+}
+
+/* --------------------------------------------------------------------------
+   15. BREAKPOINTS — a nav é subtrativa; o conteúdo só empilha.
+   1080 ajusta o shot; 920 é o divisor dos cards; 680/600/380 são a nav.
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 1080px) {
+  .frame-body { grid-template-columns: 170px 1fr; }
+  .f-side { display: none; }
+}
+
+@media (max-width: 1023px) {
+  .spec-line { display: none; }
+  .tool-grid { grid-template-columns: repeat(2, 1fr); }
+  .wires { height: 96px; }
+}
+
+@media (max-width: 920px) {
+  .nav-links { display: none; }
+
+  .section { padding: 80px 0; }
+  .section-head { display: block; margin-bottom: 44px; }
+  .faq-grid { grid-template-columns: 1fr; gap: 36px; }
+  .card-grid.card-grid-3 { grid-template-columns: 1fr; }
+  .foot-grid { grid-template-columns: 1fr 1fr; gap: 28px; }
+}
+
+@media (max-width: 820px) {
+  .feat-grid { grid-template-columns: 1fr; }
+  .well { min-height: 0; }
+}
+
+@media (max-width: 680px) {
+  .section { padding: 68px 0; }
+  .hero { padding-top: calc(var(--nav-h) + 64px); padding-bottom: 84px; }
+  .nav-inner { gap: 14px; padding: 0 20px; }
+  .wrap { padding: 0 20px; }
+  .foot-grid { grid-template-columns: 1fr; }
+  .shot-wrap { margin-top: 56px; }
+  .frame-body { grid-template-columns: 1fr; min-height: 0; }
+  .f-rail { display: none; }
+  .f-main { padding: 20px; }
+  .cta { padding: 88px 0 96px; }
+  .icons { flex-wrap: wrap; }
+}
+
+@media (max-width: 600px) {
+  .nav-gh { display: none; }
+  .tool-grid { grid-template-columns: 1fr; }
+  .wires { display: none; }
+}
+
+@media (max-width: 380px) {
+  .icon-btn { display: none; }
+  .nav-inner { padding: 0 16px; }
+  .wrap { padding: 0 16px; }
+}
+
+/* --------------------------------------------------------------------------
+   16. MOVIMENTO REDUZIDO
+   Quem pediu menos animação pediu menos animação em tudo: os artefatos
+   continuam (são estáticos por natureza), mas param de se mexer.
+   -------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .btn, .icon-btn, .copy-btn, .card, .tool, .faq-chev, .sw::after, .foot-os .foot-tip, .nav {
+    transition: none;
+  }
+  .card:hover { transform: none; }
+  .tool:hover { transform: none; }
+  .btn:active { transform: none; }
+  .ribbon { animation: none; }
+  .stars::before, .stars::after { animation: none; }
+  .chip .dot { animation: none; }
+}
