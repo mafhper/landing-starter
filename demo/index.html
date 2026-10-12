@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="theme-loading">
+<html lang="en" class="theme-loading" data-repo="mafhper/landing-starter">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -265,23 +265,23 @@
           <div class="install-card">
             <div class="install-os"><svg class="os-mark" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.05 12.54c-.03-2.9 2.36-4.29 2.47-4.36-1.35-1.97-3.44-2.24-4.18-2.27-1.78-.18-3.47 1.05-4.37 1.05-.9 0-2.29-1.02-3.77-1-1.94.03-3.72 1.13-4.72 2.86-2.01 3.49-.51 8.66 1.45 11.49.96 1.39 2.1 2.94 3.6 2.89 1.45-.06 2-.93 3.75-.93 1.75 0 2.24.93 3.77.9 1.56-.03 2.55-1.41 3.5-2.81 1.1-1.61 1.56-3.17 1.58-3.25-.03-.02-3.03-1.16-3.06-4.6ZM14.2 4.06c.8-.97 1.33-2.31 1.19-3.65-1.15.05-2.53.77-3.35 1.73-.73.85-1.38 2.22-1.21 3.53 1.28.1 2.59-.65 3.37-1.61Z"/></svg><h3>macOS</h3></div>
             <p>Signed and notarized .dmg for Apple Silicon and Intel, macOS 13+.</p>
-            <a class="btn btn-primary install-dl" href="https://github.com/mafhper/landing-starter/releases">Download .dmg</a>
+            <a class="btn btn-primary install-dl" href="https://github.com/mafhper/landing-starter/releases/latest" data-release-os="macos">Download .dmg</a>
           </div>
 
           <div class="install-card">
             <div class="install-os"><svg class="os-mark" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M0 3.45 9.75 2.1v9.45H0m10.95-9.6L24 0v11.4H10.95M0 12.6h9.75v9.45L0 20.7M10.95 12.6H24V24l-12.9-1.8"/></svg><h3>Windows</h3></div>
             <p>Portable .zip and per-user .msi installers, on x86_64 and arm64.</p>
-            <a class="btn btn-primary install-dl" href="https://github.com/mafhper/landing-starter/releases">Download .msi</a>
+            <a class="btn btn-primary install-dl" href="https://github.com/mafhper/landing-starter/releases/latest" data-release-os="windows">Download .msi</a>
           </div>
 
           <div class="install-card">
             <div class="install-os"><svg class="os-mark" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2c-1.7 0-3 1.7-3 4 0 .6.1 1.2.3 1.7C6.6 8.6 5 10.7 5 13.3c0 2.4 1.3 4.4 3.2 5.3.4 2 2 3.4 3.8 3.4s3.4-1.4 3.8-3.4c1.9-.9 3.2-2.9 3.2-5.3 0-2.6-1.6-4.7-4.3-5.6.2-.5.3-1.1.3-1.7 0-2.3-1.3-4-3-4Zm0 2c.6 0 1 1 1 2 0 .4 0 .7-.1 1.1-.3-.1-.6-.1-.9-.1s-.6 0-.9.1c-.1-.4-.1-.7-.1-1.1 0-1 .4-2 1-2Zm-1.9 14.6c.5.3 1.2.4 1.9.4s1.4-.1 1.9-.4c-.4.9-1.1 1.4-1.9 1.4s-1.5-.5-1.9-1.4Z"/></svg><h3>Linux</h3></div>
             <p>Packages for amd64 and arm64: .deb, .rpm and Arch .pkg.tar.zst.</p>
-            <a class="btn btn-primary install-dl" href="https://github.com/mafhper/landing-starter/releases">Download .deb</a>
+            <a class="btn btn-primary install-dl" href="https://github.com/mafhper/landing-starter/releases/latest" data-release-os="linux">Download .deb</a>
           </div>
         </div>
 
-        <p class="install-note mono">On this demo the buttons fall back to the releases page, the same fallback the resolver uses in production. The mechanism is in <code>download/README.md</code>.</p>
+        <p class="install-note mono">This demo repository has no releases, so the resolver script leaves the buttons on the fallback: the releases page. The mechanism is in <code>download/README.md</code>.</p>
       </div>
     </section>
 
@@ -345,5 +345,6 @@
   </footer>
 
   <script src="assets/js/app.js"></script>
+  <script type="module" src="assets/js/latest-release.mjs"></script>
 </body>
 </html>
