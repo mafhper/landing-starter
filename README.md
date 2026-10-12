@@ -49,14 +49,27 @@ template/                  <- tudo que vira o projeto novo
   index.html
   assets/css/styles.css    <- tokens + layout + nav subtrativa + breakpoints
   assets/js/app.js         <- tema, nav .scrolled, copiar comando (so isto)
+  serve.mjs                <- dev server sem dependencia (node serve.mjs)
   download/worker.mjs      <- o resolvedor (Cloudflare Worker, zero dependencia)
   download/worker.test.mjs <- 11 casos, roda com node --test
   download/wrangler.jsonc
   download/README.md       <- os tres niveis do mecanismo, com o porque
-  README.template.md
+  README.template.md       <- vira README.md no destino
   .gitignore
 bootstrap.mjs              <- instancia um projeto novo
+demo/                      <- o template instanciado ("Demo Notes"), publicado no Pages
 ```
+
+## Demo
+
+`demo/` e o template instanciado pelo proprio bootstrap, com conteudo de um
+produto ficticio ("Demo Notes"). E o que o GitHub Pages publica:
+
+- publicado: `https://mafhper.github.io/landing-starter/`
+- local: `node template/serve.mjs demo 8787`
+
+O workflow `.github/workflows/pages.yml` publica **so a pasta `demo/`** —
+o template e os scripts do repo nao vao para o site.
 
 ## Os tres niveis de download
 

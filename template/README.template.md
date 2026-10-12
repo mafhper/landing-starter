@@ -12,12 +12,14 @@ partir do template `landing-starter`.
 
 ## Rodar localmente
 
-Nao ha build. Abra `index.html` no navegador, ou sirva a pasta:
+Nao ha build. Sirva a pasta com o dev server embutido (sem dependencia):
 
 ```bash
-npx serve .
-# ou: python -m http.server
+node serve.mjs
+# http://localhost:8787/
 ```
+
+Ou abra `index.html` direto no navegador.
 
 ## Customizar
 
