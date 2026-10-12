@@ -1,22 +1,20 @@
 # download/ — o resolvedor de downloads
 
-Os botões de download do site apontam para rotas, não para arquivos:
-
-```
-/download/macos        → 302 → /download/macos-arm64
-/download/macos-arm64  → 302 → github.com/OWNER/REPO/releases/download/v9.9.9/App-v9.9.9-macos-arm64.dmg
-GitHub                 → 302 → URL assinada → o binário
-```
+Os botões de download entregam o binário do **último release** do GitHub sem você
+republicar o site. Há quatro caminhos, do mais simples ao mais robusto — a escolha é
+por tipo de host:
 
 ## Qual nível usar
 
 | Onde o site vive | Nível |
 |---|---|
-| GitHub Pages ou qualquer host estático | **1** — link direto em `releases/latest/download/<asset>`; exige nome de asset fixo (sem versão) |
+| Host estático, assets com nome **fixo** (sem versão) | **1** — link direto em `releases/latest/download/<asset>` |
+| Host estático (GitHub Pages), assets com **versão no nome** | **1.5** — resolução no cliente (`assets/js/latest-release.mjs`) |
 | Host que roda JS no servidor (Cloudflare, Deno Deploy, qualquer runtime de `fetch`) | 2 — o worker deste diretório |
 | Idem ao 2, com tráfego alto | 3 — dispatch + KV |
 
-> **GitHub Pages é estático: não roda o worker.** Para ele, use o Nível 1.
+> **GitHub Pages é estático: não roda o worker.** Para ele, use o Nível 1 (assets de nome
+> fixo) ou o Nível 1.5 (assets versionados); o template já vem com o Nível 1.5 montado.
 
 ### Nível 1
 
@@ -26,6 +24,46 @@ GitHub                 → 302 → URL assinada → o binário
 
 O GitHub resolve o "latest" sozinho. O nome do asset precisa ser fixo: a versão fica na
 tag do release, nunca no nome do arquivo.
+
+## Nível 1.5 — resolução no cliente
+
+Para releases cujo nome do asset muda a cada versão (ex.: `Mark-Lee_1.8.3_amd64.deb`). O
+site continua estático; um módulo pequeno resolve os links no navegador do visitante:
+
+1. lê o repositório de `<html data-repo="OWNER/REPO">`;
+2. busca `api.github.com/repos/OWNER/REPO/releases/latest` (API pública, CORS aberto);
+3. para cada `<a data-release-os="...">`, escolhe o asset cujo nome casa o primeiro padrão
+   da plataforma e reescreve o `href` para o `browser_download_url`.
+
+**Degradação:** qualquer falha — rede, rate limit por visitante (a API sem token aceita
+60 req/h por IP), release sem asset — deixa o link no fallback gravado no HTML, que
+funciona sem JS:
+
+```html
+<a class="btn install-dl" href="https://github.com/OWNER/REPO/releases/latest" data-release-os="macos">Download .dmg</a>
+```
+
+O href do HTML é o fallback de verdade; o script só melhora o que já funciona. Em
+`file://` (abrir o HTML direto) o módulo não carrega — o navegador bloqueia módulos fora
+de http(s) — e os botões ficam no fallback; use `node serve.mjs` para ver a resolução.
+
+### Configurar os padrões
+
+O mapa padrão está em `latest-release.mjs` (`DEFAULT_PATTERNS`), na ordem em que os
+padrões são testados — o primeiro que casar vence:
+
+- `macos`: `.dmg`, depois `.app.tar.gz`;
+- `windows`: `.msi`, depois `-setup.exe`;
+- `linux`: `.deb`, depois `.rpm`, depois `.AppImage`.
+
+Para ajustar sem editar o módulo, um botão pode declarar os próprios padrões —
+expressões regulares separadas por vírgula, sem as barras:
+
+```html
+<a ... data-release-os="linux" data-release-patterns="_amd64\.deb$,_amd64\.rpm$">Download .deb</a>
+```
+
+Testes: `node --test assets/js/latest-release.test.mjs` — 13 casos, sem rede.
 
 ## Nível 2 — o worker
 

@@ -50,7 +50,7 @@ createServer((req, res) => {
     res.writeHead(501, { "content-type": "text/plain; charset=utf-8" });
     res.end(
       "O resolvedor de downloads é o worker de download/ - no dev local ele não está no ar.\n" +
-      "Veja download/README.md (os três níveis) para como funciona em produção.\n",
+      "Veja download/README.md (os níveis) para como funciona em produção.\n",
     );
     return;
   }

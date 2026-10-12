@@ -193,9 +193,9 @@ if (dry) {
   console.log(`
 próximos passos:
   1. cd ${JSON.stringify(rootRel(destino))}
-  2. ajuste o repositório em download/worker.mjs (CONFIG.repo) ou em download/wrangler.jsonc (vars)
-  3. node --test download/worker.test.mjs
-  4. para ver local: node serve.mjs   (ou abra index.html direto)`);
+  2. node --test download/worker.test.mjs assets/js/latest-release.test.mjs
+  3. para ver local: node serve.mjs
+  4. opcional, só para host com server-side: ajuste download/worker.mjs (CONFIG.repo) ou download/wrangler.jsonc (vars)`);
 }
 
 function rootRel(p) {
