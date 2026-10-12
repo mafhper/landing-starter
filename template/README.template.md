@@ -4,32 +4,27 @@ __DESC__
 
 __TAGLINE__
 
-## O que e isso
+## O que é
 
-Site estatico (HTML + CSS + JS, sem build) para um produto de uma pagina,
-com os botoes de download resolvendo o ultimo release por rota. Gerado a
+Site estático (HTML + CSS + JS, sem build) para um produto de uma página. Gerado a
 partir do template `landing-starter`.
 
-## Rodar localmente
-
-Nao ha build. Sirva a pasta com o dev server embutido (sem dependencia):
+## Rodar
 
 ```bash
 node serve.mjs
 # http://localhost:8787/
 ```
 
-Ou abra `index.html` direto no navegador.
+Não há build. Também funciona abrindo `index.html` direto no navegador.
 
 ## Customizar
 
-- **Cores e tipografia:** `assets/css/styles.css`, bloco 1 (tokens).
-  Trocar o valor troca o tema; trocar o nome do papel quebra a hierarquia.
-- **Conteudo:** `index.html` - secoes hero, features, download, faq, footer.
-- **Texto do hero, ano e copia:** `assets/js/app.js` (pouco mais que isto).
-- **Downloads:** os botoes apontam para `/download/<os>`. O caminho para
-  host estatico (GitHub Pages) e a opcao com server-side estao em
-  `download/README.md`.
+- **Cores e tipografia:** bloco 1 de `assets/css/styles.css` (tokens). Trocar o valor
+  troca o tema; trocar o nome do papel quebra a hierarquia.
+- **Conteúdo:** seções de `index.html` — hero, features, download, faq, footer.
+- **Download:** os botões apontam para `/download/<os>`; escolha o nível por tipo de
+  host em `download/README.md`.
 
 ## Testes
 
@@ -39,14 +34,11 @@ node --test download/worker.test.mjs
 
 ## Deploy
 
-- **So o site (sem backend):** publique a raiz em GitHub Pages, Netlify ou
-  Cloudflare Pages. E o caminho **padrao para GitHub Pages**: use os links do
-  "Nivel 1" do `download/README.md` (`releases/latest/download/...`, com
-  nome de asset fixo).
-- **Com um host que rode o worker** (qualquer runtime de `fetch`; exemplo
-  com Cloudflare incluso): `cd download && npx wrangler deploy` e aponte a
-  rota `/download/*` para o worker.
+- **Só o site (sem backend):** GitHub Pages, Netlify ou Cloudflare Pages. Para GitHub
+  Pages, use os links do Nível 1 do `download/README.md`.
+- **Com host que rode o worker:** `cd download && npx wrangler deploy` e aponte a rota
+  `/download/*`.
 
-## Licenca
+## Licença
 
-Defina a sua antes de publicar. O template nao impoe licenca.
+Defina a sua antes de publicar. O template não impõe licença.
