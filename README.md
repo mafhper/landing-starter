@@ -73,13 +73,14 @@ o template e os scripts do repo nao vao para o site.
 
 ## Os tres niveis de download
 
-1. **Link direto** `releases/latest/download/<asset>` — sem backend nenhum,
-   exige nome de asset fixo (sem versao no nome).
-2. **O worker incluido** — nome versionado, escolha por SO/arch via Client
-   Hints, cache de 300s, degradacao graciosa. E o padrao do site analisado.
-3. **Dispatch no release (KV)** — o CI empurra a tag para o site; evita a
-   API do GitHub no caminho do clique. Snippet no
-   `template/download/README.md`.
+1. **Link direto** `releases/latest/download/<asset>` — roda em **qualquer
+   host estatico, GitHub Pages incluido**; exige nome de asset fixo (sem
+   versao no nome).
+2. **O worker incluido** — para **hosts com server-side** (qualquer runtime
+   de `fetch`; o exemplo incluso e Cloudflare): nome versionado, escolha por
+   SO/arch via Client Hints, cache de 300s.
+3. **Dispatch no release (KV)** — idem ao 2, para trafego alto; evita a API
+   do GitHub no caminho do clique. Snippet em `template/download/README.md`.
 
 ## De onde veio
 

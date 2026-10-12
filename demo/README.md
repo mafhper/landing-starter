@@ -27,8 +27,9 @@ Ou abra `index.html` direto no navegador.
   Trocar o valor troca o tema; trocar o nome do papel quebra a hierarquia.
 - **Conteudo:** `index.html` - secoes hero, features, download, faq, footer.
 - **Texto do hero, ano e copia:** `assets/js/app.js` (pouco mais que isto).
-- **Downloads:** os botoes apontam para `/download/<os>`. Os dois caminhos
-  (estatico puro e worker) estao em `download/README.md`.
+- **Downloads:** os botoes apontam para `/download/<os>`. O caminho para
+  host estatico (GitHub Pages) e a opcao com server-side estao em
+  `download/README.md`.
 
 ## Testes
 
@@ -39,11 +40,12 @@ node --test download/worker.test.mjs
 ## Deploy
 
 - **So o site (sem backend):** publique a raiz em GitHub Pages, Netlify ou
-  Cloudflare Pages. Nesse caso use o "Nivel 1" do `download/README.md`
-  (links diretos para `releases/latest/download/...`, com nome de asset
-  fixo).
-- **Com o resolvedor de downloads:** `cd download && npx wrangler deploy`
-  e aponte a rota `/download/*` para o worker.
+  Cloudflare Pages. E o caminho **padrao para GitHub Pages**: use os links do
+  "Nivel 1" do `download/README.md` (`releases/latest/download/...`, com
+  nome de asset fixo).
+- **Com um host que rode o worker** (qualquer runtime de `fetch`; exemplo
+  com Cloudflare incluso): `cd download && npx wrangler deploy` e aponte a
+  rota `/download/*` para o worker.
 
 ## Licenca
 
