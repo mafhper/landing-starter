@@ -1,34 +1,34 @@
 /* ==========================================================================
-   worker.mjs - resolve /download/<os> para o asset do ULTIMO release.
+   worker.mjs - resolve /download/<os> para o asset do ÚLTIMO release.
 
-   Este e o padrao destilado do site analisado (ver README do template).
-   O site fica 100% estatico; a inteligencia mora aqui, em tres passos:
+   Este é o padrão destilado do site analisado (ver README do template).
+   O site fica 100% estático; a inteligencia mora aqui, em três passos:
 
      1. /download/<os>          -> escolhe a arquitetura pelo Client Hint
                                    (Sec-CH-UA-Arch) e redireciona para a
-                                   rota explicita, ex.: /download/macos-arm64
-     2. /download/<os>-<arch>   -> descobre a tag do ultimo release (cache de
+                                   rota explícita, ex.: /download/macos-arm64
+     2. /download/<os>-<arch>   -> descobre a tag do último release (cache de
                                    300s) e responde 302 para o asset no GitHub
      3. GitHub                  -> redireciona de novo para a URL assinada e
-                                   entrega o binario (isso e do GitHub)
+                                   entrega o binario (isso é do GitHub)
 
-   Por que dois hops: o hop 1 e barato e deixa a escolha de arquitetura
-   VISIVEL e cacheavel por variante; o hop 2 e o que consulta a API e por
-   isso e o que tem cache curto. Nenhum JS roda no navegador do usuario.
+   Por que dois hops: o hop 1 é barato e deixa a escolha de arquitetura
+   VISÍVEL e cacheável por variante; o hop 2 é o que consulta a API e por
+   isso é o que tem cache curto. Nenhum JS roda no navegador do usuário.
 
    CONFIGURACAO: troque repo e assets abaixo. Os templates usam
    {tag} = v1.2.3 e {version} = 1.2.3.
    ========================================================================== */
 
 export const CONFIG = {
-  /* <-- troque pelo seu repositorio */
+  /* <-- troque pelo seu repositório */
   repo: "OWNER/REPO",
 
-  /* TTL do cache, em segundos. 300 = release nova visivel em ate 5 min,
+  /* TTL do cache, em segundos. 300 = release nova visível em até 5 min,
      sem martelar a API do GitHub a cada clique. */
   cacheTtl: 300,
 
-  /* Nome do asset por OS/arch. Qualquer convencao serve; mantenha os
+  /* Nome do asset por OS/arch. Qualquer convenção serve; mantenha os
      releases publicando os mesmos nomes. */
   assets: {
     macos: {
@@ -45,18 +45,18 @@ export const CONFIG = {
     },
   },
 
-  /* Arquitetura padrao quando nao ha hint. */
+  /* Arquitetura padrão quando não há hint. */
   defaults: { macos: "arm64", linux: "x64", windows: "x64" },
 
-  /* Em quais OS o Client Hint troca a escolha. Hoje so macOS: Chrome/Edge
-     informam a arch do Mac de forma confiavel; em Linux/Windows o hint
-     costuma vir vazio ou "x86" mesmo em maquina arm64, entao o default
-     manda. Quem precisa de arm64 nesses sistemas usa a rota explicita. */
+  /* Em quais OS o Client Hint troca a escolha. Hoje só macOS: Chrome/Edge
+     informam a arch do Mac de forma confiável; em Linux/Windows o hint
+     costuma vir vazio ou "x86" mesmo em máquina arm64, então o default
+     manda. Quem precisa de arm64 nesses sistemas usa a rota explícita. */
   hintChanges: ["macos"],
 };
 
 /* --------------------------------------------------------------------------
-   Funcoes puras (testadas em worker.test.mjs, sem Cloudflare)
+   Funções puras (testadas em worker.test.mjs, sem Cloudflare)
    -------------------------------------------------------------------------- */
 
 const OS_ALIASES = {
@@ -88,7 +88,7 @@ export function parseTarget(segment) {
   return { os, arch };
 }
 
-/* Escolhe a arquitetura: o hint so muda o resultado onde CONFIG.hintChanges
+/* Escolhe a arquitetura: o hint só muda o resultado onde CONFIG.hintChanges
    permite; fora disso vale o default do OS. */
 export function pickArch(os, hintRaw) {
   if (!CONFIG.defaults[os]) return null;
@@ -129,17 +129,17 @@ export async function handleRequest(request, deps = {}) {
   }
 
   /* Hop 1: sem arch na rota -> escolhe pelo hint e manda para a rota
-     explicita. Cacheia tambem: e deterministico dada a mesma header. */
+     explícita. Cacheia também: e determinístico dada a mesma header. */
   if (!target.arch) {
     const arch = pickArch(target.os, request.headers.get("sec-ch-ua-arch")) ?? config.defaults[target.os];
     const to = new URL(`/download/${target.os}-${arch}`, url.origin).toString();
     return redirect(to, config.cacheTtl);
   }
 
-  /* Hop 2: resolve o ultimo release (com cache) e aponta para o asset. */
+  /* Hop 2: resolve o último release (com cache) e aponta para o asset. */
   const tag = await getLatestTag(config, { fetchImpl, cache });
   if (!tag) {
-    /* Degradacao graciosa: a API falhou; manda para a pagina de releases. */
+    /* Degradação graciosa: a API falhou; manda para a página de releases. */
     return redirect(`https://github.com/${config.repo}/releases/latest`, 60);
   }
 
@@ -150,7 +150,7 @@ export async function handleRequest(request, deps = {}) {
 }
 
 /* Merge de config: defaults do modulo <- env do Worker (wrangler vars) <-
-   deps injetadas no teste. O env permite trocar repo/TTL sem editar o codigo. */
+   deps injetadas no teste. O env permite trocar repo/TTL sem editar o código. */
 function resolveConfig(deps) {
   const c = { ...CONFIG, ...(deps.config ?? {}) };
   const env = deps.env ?? {};

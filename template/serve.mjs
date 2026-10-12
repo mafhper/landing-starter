@@ -1,18 +1,18 @@
 #!/usr/bin/env node
 /* ==========================================================================
-   serve.mjs - servidor estatico de DESENVOLVIMENTO. Sem dependencia, sem build.
+   serve.mjs - servidor estático de DESENVOLVIMENTO. Sem dependência, sem build.
 
    Uso:
      node serve.mjs [dir] [porta]     (default: . e 8787)
 
-   O QUE ELE E
-   - um servidor minimo para ver o site local: `node serve.mjs` na pasta do
+   O QUE ELE É
+   - um servidor mínimo para ver o site local: `node serve.mjs` na pasta do
      projeto, e abra http://localhost:8787/.
-   - o site e estatico; em producao ele vai para GitHub Pages, Netlify,
+   - o site é estático; em produção ele vai para GitHub Pages, Netlify,
      Cloudflare Pages ou qualquer host de arquivos (ver README.md).
 
-   O QUE ELE NAO E
-   - nao e servidor de producao: sem cache, sem compressao, sem TLS.
+   O QUE ELE NÃO É
+   - não é servidor de produção: sem cache, sem compressão, sem TLS.
    - as rotas /download/* dependem do worker de download/ (o resolvedor de
      verdade); aqui elas respondem um aviso - ver download/README.md.
    ========================================================================== */
@@ -45,29 +45,29 @@ createServer((req, res) => {
   const url = new URL(req.url, `http://localhost:${port}`);
   const pathname = decodeURIComponent(url.pathname);
 
-  /* O resolvedor de downloads e o worker; aqui ele nao esta no ar. */
+  /* O resolvedor de downloads é o worker; aqui ele não está no ar. */
   if (pathname.startsWith("/download/")) {
     res.writeHead(501, { "content-type": "text/plain; charset=utf-8" });
     res.end(
-      "O resolvedor de downloads e o worker de download/ - no dev local ele nao esta no ar.\n" +
-      "Veja download/README.md (os tres niveis) para como funciona em producao.\n",
+      "O resolvedor de downloads é o worker de download/ - no dev local ele não está no ar.\n" +
+      "Veja download/README.md (os três níveis) para como funciona em produção.\n",
     );
     return;
   }
 
-  /* Caminho seguro: resolve sob o diretorio servido, sem sair dele. */
+  /* Caminho seguro: resolve sob o diretório servido, sem sair dele. */
   const rel = pathname.replace(/^[/\\]+/, "");
   let alvo = resolve(dir, rel);
   if (alvo !== dir && !alvo.startsWith(dir + sep)) {
     res.writeHead(403, { "content-type": "text/plain; charset=utf-8" });
-    res.end("fora do diretorio servido\n");
+    res.end("fora do diretório servido\n");
     return;
   }
 
   if (existsSync(alvo) && statSync(alvo).isDirectory()) alvo = resolve(alvo, "index.html");
   if (!existsSync(alvo) || !statSync(alvo).isFile()) {
     res.writeHead(404, { "content-type": "text/plain; charset=utf-8" });
-    res.end(`nao achei ${pathname}\n`);
+    res.end(`não achei ${pathname}\n`);
     return;
   }
 

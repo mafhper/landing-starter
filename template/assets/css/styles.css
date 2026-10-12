@@ -1,16 +1,16 @@
 /* ==========================================================================
    landing-starter - styles.css
 
-   Um design system de UMA pagina. Sem framework, sem build.
-   Ordem de leitura: tokens -> base -> nav -> hero -> secoes -> cards ->
+   Um design system de UMA página. Sem framework, sem build.
+   Ordem de leitura: tokens -> base -> nav -> hero -> seções -> cards ->
    download -> faq -> footer -> breakpoints.
 
-   Os tres padroes que dao o carater (e que valem entender antes de editar):
+   Os três padrões que dão o caráter (e que valem entender antes de editar):
    1. Hairlines em vez de sombras: profundidade por fio de 1px.
    2. Grid como fio: cards com gap de 1px sobre fundo --hairline.
-   3. Nav subtrativa: cada breakpoint esconde o que nao e essencial.
+   3. Nav subtrativa: cada breakpoint esconde o que não é essencial.
 
-   Comentario do autor: os nomes de token sao PAPEL, nao matiz.
+   Comentário do autor: os nomes de token são PAPEL, não matiz.
    Trocar o valor troca o tema; trocar o papel quebra a hierarquia.
    ========================================================================== */
 
@@ -28,7 +28,7 @@
   --accent-ring: color-mix(in srgb, var(--accent) 55%, transparent);
   --on-accent: #fff;
 
-  /* Escada de superficie: canvas (pagina) -> band (faixa) -> surface (card) */
+  /* Escada de superfície: canvas (página) -> band (faixa) -> surface (card) */
   --canvas: #fff;
   --band: #f7f8fa;
   --surface: #fff;
@@ -43,7 +43,7 @@
   --hairline: #e5e8ed;
   --hairline-strong: #d3d8e0;
 
-  /* Ilustracoes isometricas: tres tons de face (topo, direita, esquerda) */
+  /* Ilustrações isométricas: três tons de face (topo, direita, esquerda) */
   --iso-top: #fafbfd;
   --iso-right: #eef1f6;
   --iso-left: #e2e7ef;
@@ -61,7 +61,7 @@
   --nav-h: 56px;
 
   /* Tipografia.
-     Default sem dependencia externa. Para usar uma fonte propria,
+     Default sem dependência externa. Para usar uma fonte própria,
      coloque os .woff2 em assets/fonts/ e declare @font-face aqui. */
   --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --font-mono: ui-monospace, "SF Mono", "Cascadinha Mono", Menlo, Consolas, monospace;
@@ -86,7 +86,7 @@
   --hairline: #1e222c;
   --hairline-strong: #2c3140;
 
-  /* Ilustracoes isometricas no escuro */
+  /* Ilustrações isométricas no escuro */
   --iso-top: #1a1e28;
   --iso-right: #12151c;
   --iso-left: #0c0e14;
@@ -119,7 +119,7 @@ h1, h2, h3, h4, p, figure { margin: 0; }
 
 ::selection { background: color-mix(in srgb, var(--accent) 25%, transparent); }
 
-/* Ancoras: o offset e a altura da nav fixa + folga */
+/* Âncoras: o offset é a altura da nav fixa + folga */
 [id] { scroll-margin-top: calc(var(--nav-h) + 16px); }
 
 .mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums; letter-spacing: 0; }
@@ -129,7 +129,7 @@ h1, h2, h3, h4, p, figure { margin: 0; }
 /* --------------------------------------------------------------------------
    3. NAV
    Fixed com blur. A classe .scrolled (via app.js) acende a borda inferior.
-   A responsividade e SUBTRATIVA: em cada breakpoint some uma peca,
+   A responsividade é SUBTRATIVA: em cada breakpoint some uma peça,
    nunca entra um hamburger. O que fica sempre: brand + CTA.
    -------------------------------------------------------------------------- */
 
@@ -199,7 +199,7 @@ h1, h2, h3, h4, p, figure { margin: 0; }
 }
 .icon-btn:hover { color: var(--ink); background: color-mix(in srgb, var(--ink) 7%, transparent); }
 
-/* O icone troca com o tema: sol no escuro, lua no claro */
+/* O ícone troca com o tema: sol no escuro, lua no claro */
 .dark .icon-moon { display: none; }
 .icon-sun { display: none; }
 .dark .icon-sun { display: inline; }
@@ -234,9 +234,9 @@ h1, h2, h3, h4, p, figure { margin: 0; }
 
 /* --------------------------------------------------------------------------
    5. HERO
-   A grade decorativa e desenhada com dois gradientes repetidos + mascara
-   radial: zero elementos extra, zero JS. Fica atras do conteudo
-   (pointer-events: none) e some no tema escuro? Nao - ela acompanha o tema
+   A grade decorativa é desenhada com dois gradientes repetidos + máscara
+   radial: zero elementos extra, zero JS. Fica atrás do conteúdo
+   (pointer-events: none) e some no tema escuro? Não - ela acompanha o tema
    pelo token --hairline.
    -------------------------------------------------------------------------- */
 
@@ -302,7 +302,7 @@ h1, h2, h3, h4, p, figure { margin: 0; }
   gap: 12px;
 }
 
-/* Comando copiavel: mono, com botao de copiar que vira .done no sucesso */
+/* Comando copiável: mono, com botão de copiar que vira .done no sucesso */
 .brew {
   display: inline-flex;
   align-items: center;
@@ -371,7 +371,7 @@ h1, h2, h3, h4, p, figure { margin: 0; }
 
 .section { padding: 96px 0; position: relative; }
 
-/* A juncao horizontal entre secoes. Em telas largas (>=1024px) ganha
+/* A junção horizontal entre seções. Em telas largas (>=1024px) ganha
    marcadores "+" desenhados em mono nos dois cantos - o "desenho de planta". */
 .rule { border-top: 1px solid var(--hairline); }
 @media (min-width: 1024px) {
@@ -409,7 +409,7 @@ h1, h2, h3, h4, p, figure { margin: 0; }
 }
 .section-head p { color: var(--muted); font-size: clamp(16px, 1.8vw, 18px); text-wrap: pretty; }
 
-/* Spec no canto da secao: mono, micro, caixa alta opcional */
+/* Spec no canto da seção: mono, micro, caixa alta opcional */
 .spec-line {
   flex: none;
   padding-bottom: 6px;
@@ -444,9 +444,9 @@ h1, h2, h3, h4, p, figure { margin: 0; }
 }
 .card-well svg { height: 178px; width: auto; max-width: 100%; margin: 0 auto; display: block; }
 
-/* Ilustracoes isometricas dos cards (kernel do iso-figure: cada face e um
-   rect em coordenadas locais colocado no plano por matrix(), projecao 30
-   graus; a oclusao e ordem de pintura, e o non-scaling-stroke mantem a
+/* Ilustrações isométricas dos cards (kernel do iso-figure: cada face é um
+   rect em coordenadas locais colocado no plano por matrix(), projeção 30
+   graus; a oclusão é ordem de pintura, e o non-scaling-stroke mantém a
    hairline de 1px sob o transform). */
 .card-well .iso-face {
   fill: var(--iso-right);
@@ -473,8 +473,8 @@ h1, h2, h3, h4, p, figure { margin: 0; }
 .card-well .iso-live-fill { fill: var(--accent); }
 .card-well .iso-label { fill: var(--accent); font-family: var(--font-mono); letter-spacing: .04em; }
 
-/* Interacao (hover no card). A propria geometria iso dita o movimento:
-   z puro projeta vertical, entao o "explode" da pilha e translateY; o pulso
+/* Interação (hover no card). A própria geometria iso dita o movimento:
+   z puro projeta vertical, então o "explode" da pilha é translateY; o pulso
    viaja pelo arco via offset-path; o selo sobe. */
 .card-well .iso-plate,
 .card-well .iso-float { transition: transform .28s cubic-bezier(.2, .7, .2, 1); }
@@ -499,7 +499,7 @@ h1, h2, h3, h4, p, figure { margin: 0; }
 .card p { color: var(--muted); font-size: 14.5px; text-wrap: pretty; }
 
 /* --------------------------------------------------------------------------
-   8. DOWNLOAD - os cards de OS. Os botoes apontam para /download/<os>,
+   8. DOWNLOAD - os cards de OS. Os botões apontam para /download/<os>,
    rotas que o worker de download/ resolve (ver download/README.md).
    -------------------------------------------------------------------------- */
 
@@ -513,8 +513,8 @@ h1, h2, h3, h4, p, figure { margin: 0; }
 .os-mark { width: 20px; height: 20px; color: var(--ink); flex: none; }
 .install-card h3 { font-size: 17px; font-weight: 600; letter-spacing: -0.015em; }
 .install-card p { margin: 6px 0 18px; color: var(--muted); font-size: 14.5px; text-wrap: pretty; }
-/* o botao fica ancorado no fundo do card: os tres alinham entre si mesmo
-   se a descricao ocupar mais linhas em uma largura intermediaria */
+/* o botão fica ancorado no fundo do card: os três alinham entre si mesmo
+   se a descrição ocupar mais linhas em uma largura intermediaria */
 .install-dl { align-self: flex-start; margin-top: auto; }
 
 .install-note {
@@ -601,15 +601,15 @@ footer { border-top: 1px solid var(--hairline); padding: 72px 0 44px; }
 }
 
 /* --------------------------------------------------------------------------
-   11. BREAKPOINTS - a nav e subtrativa; o conteudo so empilha.
-   920 e o divisor: 680 ajusta densidade; 600 e 380 sao a nav.
+   11. BREAKPOINTS - a nav é subtrativa; o conteúdo só empilha.
+   920 é o divisor: 680 ajusta densidade; 600 e 380 são a nav.
    -------------------------------------------------------------------------- */
 
 @media (max-width: 920px) {
-  /* nav: somem os links de secao */
+  /* nav: somem os links de seção */
   .nav-links { display: none; }
 
-  /* conteudo */
+  /* conteúdo */
   .section-head { display: block; margin-bottom: 44px; }
   .spec-line { display: none; }
   .faq-grid { grid-template-columns: 1fr; gap: 36px; }
@@ -640,7 +640,7 @@ footer { border-top: 1px solid var(--hairline); padding: 72px 0 44px; }
 
 /* --------------------------------------------------------------------------
    12. MOVIMENTO REDUZIDO
-   Quem pediu menos animacao pediu menos animacao em tudo.
+   Quem pediu menos animação pediu menos animação em tudo.
    -------------------------------------------------------------------------- */
 
 @media (prefers-reduced-motion: reduce) {

@@ -3,24 +3,24 @@
    bootstrap.mjs - instancia um projeto novo a partir de template/.
 
    Uso:
-     node bootstrap.mjs <destino> [opcoes]
+     node bootstrap.mjs <destino> [opções]
 
-   Opcoes:
+   Opções:
      --name "Meu App"       nome exibido (default: nome da pasta do destino)
-     --repo owner/repo      repositorio GitHub (default: OWNER/REPO)
+     --repo owner/repo      repositório GitHub (default: OWNER/REPO)
      --tagline "..."        primeira frase do lede do hero
      --desc "..."           meta description + rodape
      --accent "#1d4ed8"     cor de marca (hex)
-     --version "0.1.0"      versao exibida no hero
+     --version "0.1.0"      versão exibida no hero
      --git                  roda git init + commit inicial no destino
      --dry                  mostra o que faria, sem escrever nada
 
    O que ele faz, em ordem:
-     1. valida os argumentos (destino nao pode existir com conteudo);
+     1. valida os argumentos (destino não pode existir com conteúdo);
      2. percorre template/ e escreve cada arquivo no destino, substituindo
         os placeholders (__PROJECT_NAME__, __REPO__, __SLUG__, ...);
      3. confere que nenhum placeholder sobrou;
-     4. imprime os proximos passos.
+     4. imprime os próximos passos.
    ========================================================================== */
 
 import { cpSync, existsSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
@@ -64,7 +64,7 @@ if (!destinoArg) fail("falta o destino");
 const destino = resolve(destinoArg);
 const dry = flags.has("dry");
 
-/* ---- defaults e validacao ----------------------------------------------- */
+/* ---- defaults e validação ----------------------------------------------- */
 
 function humanize(s) {
   return s
@@ -84,19 +84,19 @@ const accent = String(flags.get("accent") ?? "#1d4ed8");
 const version = String(flags.get("version") ?? "0.1.0");
 const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "") || "app";
 
-if (!/^#[0-9a-fA-F]{3,8}$/.test(accent)) fail(`--accent "${accent}" nao e um hex valido (ex.: #1d4ed8)`);
-if (!/^[^\s/]+\/[^\s/]+$/.test(repo)) fail(`--repo "${repo}" nao esta no formato owner/repo`);
-if (!/^[0-9][0-9a-zA-Z.+-]*$/.test(version)) fail(`--version "${version}" invalida (ex.: 0.1.0)`);
+if (!/^#[0-9a-fA-F]{3,8}$/.test(accent)) fail(`--accent "${accent}" não é um hex válido (ex.: #1d4ed8)`);
+if (!/^[^\s/]+\/[^\s/]+$/.test(repo)) fail(`--repo "${repo}" não está no formato owner/repo`);
+if (!/^[0-9][0-9a-zA-Z.+-]*$/.test(version)) fail(`--version "${version}" inválida (ex.: 0.1.0)`);
 
-if (!existsSync(TEMPLATE)) fail(`nao achei ${TEMPLATE} - rode o bootstrap da pasta do template`);
+if (!existsSync(TEMPLATE)) fail(`não achei ${TEMPLATE} - rode o bootstrap da pasta do template`);
 if (existsSync(destino) && readdirSync(destino).length > 0) {
-  fail(`o destino ${destino} ja existe e nao esta vazio`);
+  fail(`o destino ${destino} já existe e não está vazio`);
 }
 if (destino === ROOT || destino.startsWith(TEMPLATE + "\\") || destino.startsWith(TEMPLATE + "/")) {
-  fail("o destino nao pode ser a raiz do template nem ficar dentro de template/");
+  fail("o destino não pode ser a raiz do template nem ficar dentro de template/");
 }
 
-/* ---- o mapa de substituicao --------------------------------------------- */
+/* ---- o mapa de substituição --------------------------------------------- */
 
 const MAP = {
   __PROJECT_NAME__: name,
@@ -128,8 +128,8 @@ const escritos = [];
 
 for (const src of arquivos) {
   const rel = relative(TEMPLATE, src);
-  /* README.template.md existe com esse nome no TEMPLATE para nao colidir com
-     o README do proprio repo do template; no destino ele E o README.md. */
+  /* README.template.md existe com esse nome no TEMPLATE para não colidir com
+     o README do próprio repo do template; no destino ele é o README.md. */
   const relDestino = rel.replace(/(^|[\\/])README\.template\.md$/, "$1README.md");
   const dst = join(destino, relDestino);
   bytes += statSync(src).size;
@@ -138,9 +138,9 @@ for (const src of arquivos) {
 
   mkdirSync(dirname(dst), { recursive: true });
   if (isText(src)) {
-    let conteudo = readFileSync(src, "utf8");
-    for (const [chave, valor] of Object.entries(MAP)) conteudo = conteudo.split(chave).join(valor);
-    writeFileSync(dst, conteudo, "utf8");
+    let conteúdo = readFileSync(src, "utf8");
+    for (const [chave, valor] of Object.entries(MAP)) conteúdo = conteúdo.split(chave).join(valor);
+    writeFileSync(dst, conteúdo, "utf8");
   } else {
     cpSync(src, dst);
   }
@@ -157,7 +157,7 @@ if (!dry) {
     if (m) sobrou.push(`${rel}: ${m[0]}`);
   }
   if (sobrou.length) {
-    console.error("aviso: placeholder nao substituido:");
+    console.error("aviso: placeholder não substituido:");
     for (const s of sobrou) console.error("  " + s);
   }
 }
@@ -169,9 +169,9 @@ if (!dry && flags.has("git")) {
     execFileSync("git", ["init", "-b", "main"], { cwd: destino, stdio: "pipe" });
     execFileSync("git", ["add", "-A"], { cwd: destino, stdio: "pipe" });
     execFileSync("git", ["commit", "-m", "chore: init from landing-starter"], { cwd: destino, stdio: "pipe" });
-    console.log("git: repositorio inicializado com o commit inicial");
+    console.log("git: repositório inicializado com o commit inicial");
   } catch (e) {
-    console.error("aviso: git nao completou (git user configurado?):", String(e.message).slice(0, 120));
+    console.error("aviso: git não completou (git user configurado?):", String(e.message).slice(0, 120));
   }
 }
 
@@ -191,9 +191,9 @@ if (dry) {
   console.log("\nrode sem --dry para escrever.");
 } else {
   console.log(`
-proximos passos:
+próximos passos:
   1. cd ${JSON.stringify(rootRel(destino))}
-  2. ajuste o repositorio em download/worker.mjs (CONFIG.repo) ou em download/wrangler.jsonc (vars)
+  2. ajuste o repositório em download/worker.mjs (CONFIG.repo) ou em download/wrangler.jsonc (vars)
   3. node --test download/worker.test.mjs
   4. para ver local: node serve.mjs   (ou abra index.html direto)`);
 }

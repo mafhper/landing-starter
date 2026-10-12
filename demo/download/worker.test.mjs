@@ -3,10 +3,10 @@
 
    Roda com:   node --test download/worker.test.mjs
 
-   Nao precisa de Cloudflare: o handler aceita `deps` com fetch e cache
-   falsos, entao o fluxo inteiro (rota -> hint -> tag -> URL do GitHub)
+   Não precisa de Cloudflare: o handler aceita `deps` com fetch e cache
+   falsos, então o fluxo inteiro (rota -> hint -> tag -> URL do GitHub)
    roda em Node. Os casos usam valores conhecidos-bons: nomes de asset
-   literais, nao uma recomputacao do que o codigo faz.
+   literais, não uma recomputação do que o código faz.
    ========================================================================== */
 
 import { test } from "node:test";
@@ -47,11 +47,11 @@ test("parseTarget: os sozinho, os-arch, alias e lixo", () => {
 
 /* ---- pickArch ----------------------------------------------------------- */
 
-test("pickArch: macOS muda com o hint; linux/windows nao (default manda)", () => {
+test("pickArch: macOS muda com o hint; linux/windows não (default manda)", () => {
   assert.equal(pickArch("macos", null), "arm64");        // default macOS
   assert.equal(pickArch("macos", '"x86"'), "x64");       // hint Intel
   assert.equal(pickArch("macos", '"arm"'), "arm64");
-  assert.equal(pickArch("linux", '"arm"'), "x64");       // nao troca
+  assert.equal(pickArch("linux", '"arm"'), "x64");       // não troca
   assert.equal(pickArch("windows", null), "x64");
 });
 
@@ -91,7 +91,7 @@ function fakeFetch(tag = "v9.9.9", ok = true) {
   };
 }
 
-test("hop 1: /download/macos com hint x86 redireciona para a rota explicita", async () => {
+test("hop 1: /download/macos com hint x86 redireciona para a rota explícita", async () => {
   const req = new Request("https://example.test/download/macos", {
     headers: { "sec-ch-ua-arch": '"x86"' },
   });
@@ -106,7 +106,7 @@ test("hop 1: sem hint, macOS cai no default arm64", async () => {
   assert.equal(new URL(res.headers.get("location")).pathname, "/download/macos-arm64");
 });
 
-test("hop 2: rota explicita resolve o ultimo release e aponta para o asset", async () => {
+test("hop 2: rota explícita resolve o último release e aponta para o asset", async () => {
   const req = new Request("https://example.test/download/macos-arm64");
   const res = await handleRequest(req, { fetchImpl: fakeFetch("v9.9.9"), cache: null, config: cfg });
   assert.equal(res.status, 302);
@@ -123,7 +123,7 @@ test("rota desconhecida: 404", async () => {
   assert.equal(res.status, 404);
 });
 
-test("API fora do ar: degrada para a pagina de releases", async () => {
+test("API fora do ar: degrada para a página de releases", async () => {
   const req = new Request("https://example.test/download/windows-x64");
   const res = await handleRequest(req, { fetchImpl: fakeFetch("v0", false), cache: null, config: cfg });
   assert.equal(res.status, 302);

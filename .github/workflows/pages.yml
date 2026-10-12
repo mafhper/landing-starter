@@ -1,5 +1,5 @@
-# Publica SO a pasta demo/ no GitHub Pages.
-# O template, o bootstrap e o workflow nao vao para o site.
+# Publica SÓ a pasta demo/ no GitHub Pages.
+# O template, o bootstrap e o workflow não vão para o site.
 name: Deploy demo (GitHub Pages)
 
 on:

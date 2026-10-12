@@ -14,7 +14,7 @@
 // Teste local sem deploy:  npx wrangler dev
 //
 // As variaveis em "vars" sobrescrevem o CONFIG do worker.mjs sem editar o
-// codigo: GITHUB_REPO e CACHE_TTL (segundos).
+// código: GITHUB_REPO e CACHE_TTL (segundos).
 {
   "name": "download-resolver",
   "main": "worker.mjs",
