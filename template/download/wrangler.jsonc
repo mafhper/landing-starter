@@ -1,0 +1,28 @@
+// Cloudflare Worker do resolvedor de downloads (ver worker.mjs).
+//
+// Deploy:
+//   cd download
+//   npx wrangler login     (uma vez)
+//   npx wrangler deploy
+//
+// Depois, aponte a rota /download/* do seu dominio para este worker:
+//   - Dashboard: Workers & Pages -> download-resolver -> Settings ->
+//     Domains & Routes -> Add route:  seudominio.com/download/*
+//     (zone: seu dominio), ou
+//   - descomente o bloco "routes" abaixo e rode `npx wrangler deploy` de novo.
+//
+// Teste local sem deploy:  npx wrangler dev
+//
+// As variaveis em "vars" sobrescrevem o CONFIG do worker.mjs sem editar o
+// codigo: GITHUB_REPO e CACHE_TTL (segundos).
+{
+  "name": "download-resolver",
+  "main": "worker.mjs",
+  "compatibility_date": "2026-10-01",
+  "vars": {
+    "GITHUB_REPO": "OWNER/REPO",
+    "CACHE_TTL": "300"
+  },
+  "observability": { "enabled": true }
+  // "routes": [{ "pattern": "seudominio.com/download/*", "zone_name": "seudominio.com" }]
+}

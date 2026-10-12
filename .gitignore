@@ -1,0 +1,10 @@
+# ferramentas
+node_modules/
+.wrangler/
+
+# workspace local (nunca versionar)
+.dev/
+
+# sistema
+.DS_Store
+Thumbs.db
