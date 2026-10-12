@@ -128,9 +128,12 @@ const escritos = [];
 
 for (const src of arquivos) {
   const rel = relative(TEMPLATE, src);
-  const dst = join(destino, rel);
+  /* README.template.md existe com esse nome no TEMPLATE para nao colidir com
+     o README do proprio repo do template; no destino ele E o README.md. */
+  const relDestino = rel.replace(/(^|[\\/])README\.template\.md$/, "$1README.md");
+  const dst = join(destino, relDestino);
   bytes += statSync(src).size;
-  escritos.push(rel);
+  escritos.push(relDestino);
   if (dry) continue;
 
   mkdirSync(dirname(dst), { recursive: true });
@@ -192,7 +195,7 @@ proximos passos:
   1. cd ${JSON.stringify(rootRel(destino))}
   2. ajuste o repositorio em download/worker.mjs (CONFIG.repo) ou em download/wrangler.jsonc (vars)
   3. node --test download/worker.test.mjs
-  4. abra index.html, ou: npx serve .`);
+  4. para ver local: node serve.mjs   (ou abra index.html direto)`);
 }
 
 function rootRel(p) {
