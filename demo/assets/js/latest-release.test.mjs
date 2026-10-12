@@ -154,6 +154,9 @@ test("applyLatestRelease: sem data-repo (ou placeholder) não consulta a API", a
   let called = false;
   const fetchImpl = async () => { called = true; return { ok: true, json: async () => ({}) }; };
   assert.equal(await applyLatestRelease(fakeDoc("", [fakeButton("macos")]), { fetchImpl }), 0);
-  assert.equal(await applyLatestRelease(fakeDoc("__REPO__", [fakeButton("macos")]), { fetchImpl }), 0);
+  /* O placeholder é montado em runtime: escrito por extenso, ele seria
+     substituído pelo bootstrap na instanciação e o caso deixaria de existir. */
+  const placeholder = "__" + "REPO__";
+  assert.equal(await applyLatestRelease(fakeDoc(placeholder, [fakeButton("macos")]), { fetchImpl }), 0);
   assert.equal(called, false);
 });
