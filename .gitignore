@@ -5,6 +5,10 @@ node_modules/
 # workspace local (nunca versionar)
 .dev/
 
+# montagem do catálogo (gerado por tools/build-site.mjs)
+_site/
+_stage/
+
 # sistema
 .DS_Store
 Thumbs.db

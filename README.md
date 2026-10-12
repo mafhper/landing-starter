@@ -1,52 +1,63 @@
 # landing-starter
 
-Template de landing de produto em HTML/CSS/JS puro — sem build, sem dependências.
-Inclui navbar responsiva, tema claro/escuro, ilustrações isométricas com interação e
-botões de download que sempre entregam o último release do GitHub.
+Catálogo de templates de landing de produto em HTML/CSS/JS puro — sem build, sem
+dependências, sem framework. Cada template inclui navbar responsiva, tema claro/escuro,
+download que resolve o último release do GitHub e um `bootstrap.mjs` que instancia o
+projeto com um comando.
 
-**Demo:** https://mafhper.github.io/landing-starter/
+**Catálogo (GitHub Pages):** https://mafhper.github.io/landing-starter/
+**Classic:** [/classic/](https://mafhper.github.io/landing-starter/classic/) ·
+**Aurora:** [/aurora/](https://mafhper.github.io/landing-starter/aurora/)
 
-## Como funciona
+## Templates
 
-- **Navbar subtrativa** — os links somem por prioridade (920 / 680 / 600 / 380 px) e
-  restam marca, tema e CTA. Sem hamburger, sem JS de menu.
-- **Tema claro/escuro** — script anti-FOUC, toggle e `prefers-reduced-motion` respeitado
-  em todas as animações.
-- **Ilustrações isométricas** nos cards, com hover: a pilha separa em camadas, o pulso
-  viaja pelo arco, o selo flutua.
-- **Download do último release**, em quatro níveis por tipo de host (detalhes em
-  `template/download/README.md`):
-  - **Nível 1** — host estático com asset de nome fixo: link direto em
-    `releases/latest/download/<asset>`;
-  - **Nível 1.5** (o padrão do template) — host estático com assets versionados:
-    `latest-release.mjs` resolve os links no cliente, direto para os assets do último
-    release; se a API falhar, o link fica na página de releases;
-  - **Nível 2** — host com server-side: worker incluído (`/download/<os>`, 302, cache de
-    300s);
-  - **Nível 3** — tráfego alto: dispatch + KV.
-- **`bootstrap.mjs`** instancia um projeto novo com um comando.
+| Template | Pasta | Caráter | Origem |
+|---|---|---|---|
+| **Classic** | `template/` | Hairlines no lugar de sombras, nav subtrativa, ilustrações isométricas; tema claro com escuro por preferência do sistema | Destilado de uma análise de `openlogi.org` |
+| **Aurora** | `template-v2/` | Dark-first com claro funcional: moldura de app com halo, cards com mini-UI, ribbons de gradiente, starfield, paisagem e grão; fontes OFL self-hosted | Releitura própria inspirada no app desktop do Genex (MIT); nenhum código do site original foi copiado |
+
+Mecanismos compartilhados: **download em quatro níveis** (detalhes em
+`download/README.md` de cada template), **testes em Node sem host** e **serve.mjs**
+para ver local.
 
 ## Uso
 
 ```bash
-node bootstrap.mjs ../meu-app --name "Meu App" --repo dono/repo --accent "#0ea5e9" --git
+node bootstrap.mjs ../meu-app --template template-v2 --name "Meu App" --repo dono/repo --accent "#7c3aed" --git
+node bootstrap.mjs --list        # o catálogo
 ```
 
-Ver sem escrever: `--dry`. Testes: `node --test template/download/worker.test.mjs template/assets/js/latest-release.test.mjs`.
+Ver sem escrever: `--dry`. O bootstrap substitui os placeholders (`__PROJECT_NAME__`,
+`__REPO__`, `__SLUG__`, …) e avisa se algum sobrar.
+
+Testes de um template instanciado: `node --test download/worker.test.mjs assets/js/latest-release.test.mjs`.
 
 ## Estrutura
 
 ```
-template/       o que vira o projeto novo (index.html, assets/, download/, serve.mjs)
-bootstrap.mjs   instancia um projeto novo a partir de template/
-demo/           o template instanciado ("Demo Notes"), publicado no Pages
+site/           a galeria publicada na raiz do Pages (cards com preview e download)
+template/       Classic — o que vira o projeto novo
+template-v2/    Aurora  — idem, com a camada de artefatos visuais
+demo/           Classic instanciado ("Demo Notes"), publicado em /classic/
+demo-v2/        Aurora instanciado ("Demo Notes"), publicado em /aurora/
+tools/          build-site.mjs (monta o _site + zips) e capture.mjs (screenshots via Edge headless)
+bootstrap.mjs   instancia um projeto novo a partir de um template do catálogo
 ```
 
-## Licença
+## Pages
 
-Defina antes de publicar.
+O workflow `.github/workflows/pages.yml` roda `node tools/build-site.mjs`, que monta
+`_site/` — galeria na raiz, demos em `/classic/` e `/aurora/`, zips dos templates em
+`/downloads/` (gerados a cada build, nunca versionados) — e publica o conjunto. O
+build valida as referências locais e a ausência de placeholders residuais antes de
+publicar.
 
----
+## Créditos e licenças
 
-Padrão destilado de uma análise de `openlogi.org`; ilustrações usam o kernel do
-`iso-figure` (MIT).
+- **Classic**: código próprio, destilado de uma análise da página da `openlogi.org`;
+  ilustrações usam o kernel do `iso-figure` (MIT).
+- **Aurora**: código próprio, inspirado no visual do app desktop do Genex
+  (`genex-desktop`, MIT) — sem código copiado do site.
+- **Fontes (Aurora e galeria)**: Zalando Sans SemiExpanded e Geist Mono, ambas sob
+  SIL OFL 1.1; os textos das licenças estão em `template-v2/assets/fonts/`.
+- Licença dos templates gerados: defina antes de publicar. O starter não impõe licença.

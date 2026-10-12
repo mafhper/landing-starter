@@ -1,12 +1,19 @@
-# Publica SÓ a pasta demo/ no GitHub Pages.
-# O template, o bootstrap e o workflow não vão para o site.
-name: Deploy demo (GitHub Pages)
+# Monta o catálogo no _site e publica no GitHub Pages:
+# galeria na raiz, demos em /classic/ e /aurora/, zips em /downloads/
+# (gerados aqui pelo build — nunca versionados). O bootstrap, os templates
+# e o workflow não vão para o site.
+name: Deploy catalog (GitHub Pages)
 
 on:
   push:
     branches: [main]
     paths:
+      - "site/**"
       - "demo/**"
+      - "demo-v2/**"
+      - "template/**"
+      - "template-v2/**"
+      - "tools/**"
       - ".github/workflows/pages.yml"
   workflow_dispatch:
 
@@ -27,9 +34,11 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v7
+      - name: Monta o _site (galeria + demos + zips)
+        run: node tools/build-site.mjs
       - uses: actions/configure-pages@v6
       - uses: actions/upload-pages-artifact@v5
         with:
-          path: demo
+          path: _site
       - id: deployment
         uses: actions/deploy-pages@v5

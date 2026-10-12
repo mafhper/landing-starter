@@ -1,11 +1,13 @@
 #!/usr/bin/env node
 /* ==========================================================================
-   bootstrap.mjs - instancia um projeto novo a partir de template/.
+   bootstrap.mjs - instancia um projeto novo a partir de um template do catálogo.
 
    Uso:
      node bootstrap.mjs <destino> [opções]
+     node bootstrap.mjs --list
 
    Opções:
+     --template <dir>       template do catálogo (default: template; ex.: template-v2)
      --name "Meu App"       nome exibido (default: nome da pasta do destino)
      --repo owner/repo      repositório GitHub (default: OWNER/REPO)
      --tagline "..."        primeira frase do lede do hero
@@ -14,10 +16,12 @@
      --version "0.1.0"      versão exibida no hero
      --git                  roda git init + commit inicial no destino
      --dry                  mostra o que faria, sem escrever nada
+     --list                 lista os templates do catálogo e sai
 
    O que ele faz, em ordem:
-     1. valida os argumentos (destino não pode existir com conteúdo);
-     2. percorre template/ e escreve cada arquivo no destino, substituindo
+     1. escolhe o template (pasta "template" ou "template-*" na raiz) e valida
+        os argumentos (destino não pode existir com conteúdo);
+     2. percorre o template e escreve cada arquivo no destino, substituindo
         os placeholders (__PROJECT_NAME__, __REPO__, __SLUG__, ...);
      3. confere que nenhum placeholder sobrou;
      4. imprime os próximos passos.
@@ -25,15 +29,32 @@
 
 import { cpSync, existsSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
 import { execFileSync } from "node:child_process";
-import { basename, dirname, extname, join, relative, resolve } from "node:path";
+import { basename, dirname, extname, join, relative, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const ROOT = dirname(fileURLToPath(import.meta.url));
-const TEMPLATE = join(ROOT, "template");
+
+/* ---- o catálogo ---------------------------------------------------------
+   Cada template do catálogo é uma pasta "template" ou "template-*" na raiz
+   (template/ = Classic; template-v2/ = Aurora). O --list imprime esta lista. */
+
+const TEMPLATE_DIRS = readdirSync(ROOT, { withFileTypes: true })
+  .filter((e) => e.isDirectory() && (e.name === "template" || e.name.startsWith("template-")))
+  .map((e) => e.name)
+  .sort();
+
+function templateTitle(dir) {
+  const readme = join(ROOT, dir, "README.template.md");
+  if (!existsSync(readme)) return "";
+  const line = readFileSync(readme, "utf8").split("\n").find((l) => l.startsWith("# "));
+  if (!line) return "";
+  const title = line.slice(2).trim();
+  return title.includes("__") ? "" : title;
+}
 
 /* ---- argumentos --------------------------------------------------------- */
 
-const BOOL_FLAGS = new Set(["dry", "git"]);
+const BOOL_FLAGS = new Set(["dry", "git", "list"]);
 const flags = new Map();
 const positionals = [];
 for (let i = 0; i < process.argv.length - 2; i++) {
@@ -55,14 +76,34 @@ for (let i = 0; i < process.argv.length - 2; i++) {
 
 function fail(msg) {
   console.error(`erro: ${msg}`);
-  console.error("uso: node bootstrap.mjs <destino> [--name ..] [--repo ..] [--tagline ..] [--desc ..] [--accent ..] [--version ..] [--git] [--dry]");
+  console.error("uso: node bootstrap.mjs <destino> [--template <dir>] [--name ..] [--repo ..] [--tagline ..] [--desc ..] [--accent ..] [--version ..] [--git] [--dry]  |  node bootstrap.mjs --list");
   process.exit(1);
+}
+
+/* ---- --list: o catálogo, sem exigir destino ----------------------------- */
+
+if (flags.has("list")) {
+  console.log("templates do catálogo:");
+  for (const dir of TEMPLATE_DIRS) {
+    const title = templateTitle(dir);
+    console.log(`  ${dir}${dir === "template" ? "  (default)" : ""}${title ? ` — ${title}` : ""}`);
+  }
+  console.log("\nuso: node bootstrap.mjs <destino> [--template <dir>] [--name ..] [--git]");
+  process.exit(0);
 }
 
 const destinoArg = positionals[0];
 if (!destinoArg) fail("falta o destino");
 const destino = resolve(destinoArg);
 const dry = flags.has("dry");
+
+/* ---- template escolhido -------------------------------------------------- */
+
+const templateName = String(flags.get("template") ?? "template");
+if (!/^[a-z0-9][a-z0-9-]*$/i.test(templateName)) {
+  fail(`--template "${templateName}" inválido — use o nome da pasta (ex.: template-v2); veja --list`);
+}
+const TEMPLATE = join(ROOT, templateName);
 
 /* ---- defaults e validação ----------------------------------------------- */
 
@@ -88,12 +129,18 @@ if (!/^#[0-9a-fA-F]{3,8}$/.test(accent)) fail(`--accent "${accent}" não é um h
 if (!/^[^\s/]+\/[^\s/]+$/.test(repo)) fail(`--repo "${repo}" não está no formato owner/repo`);
 if (!/^[0-9][0-9a-zA-Z.+-]*$/.test(version)) fail(`--version "${version}" inválida (ex.: 0.1.0)`);
 
-if (!existsSync(TEMPLATE)) fail(`não achei ${TEMPLATE} - rode o bootstrap da pasta do template`);
+if (!existsSync(TEMPLATE) || !statSync(TEMPLATE).isDirectory()) {
+  fail(`template "${templateName}" não existe — rode com --list para ver o catálogo`);
+}
 if (existsSync(destino) && readdirSync(destino).length > 0) {
   fail(`o destino ${destino} já existe e não está vazio`);
 }
-if (destino === ROOT || destino.startsWith(TEMPLATE + "\\") || destino.startsWith(TEMPLATE + "/")) {
-  fail("o destino não pode ser a raiz do template nem ficar dentro de template/");
+const dentroDeTemplate = TEMPLATE_DIRS.some((dir) => {
+  const base = join(ROOT, dir);
+  return destino === base || destino.startsWith(base + sep);
+});
+if (destino === ROOT || dentroDeTemplate) {
+  fail("o destino não pode ser a raiz do repo nem ficar dentro de uma pasta de template");
 }
 
 /* ---- o mapa de substituição --------------------------------------------- */
@@ -180,6 +227,7 @@ if (!dry && flags.has("git")) {
 const kb = Math.max(1, Math.round(bytes / 1024));
 console.log(dry ? "== dry run (nada foi escrito) ==" : "== projeto criado ==");
 console.log(`  destino  ${destino}`);
+console.log(`  template ${templateName}`);
 console.log(`  arquivos ${escritos.length} (${kb} KB)`);
 console.log(`  name     ${name}`);
 console.log(`  repo     ${repo}${repo === "OWNER/REPO" ? "   <- troque antes de publicar" : ""}`);

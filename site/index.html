@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>landing-starter — template catalog</title>
+  <meta name="description" content="Product landing templates in plain HTML, CSS and JavaScript. Preview a live demo, download the one you want — no build step." />
+
+  <link rel="preload" href="assets/fonts/ZalandoSansSemiExpanded-variable.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="assets/fonts/GeistMono-variable.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="bar">
+    <div class="bar-inner">
+      <span class="brand"><span class="brand-mark" aria-hidden="true"></span>landing-starter</span>
+      <a class="bar-link mono" href="https://github.com/mafhper/landing-starter">GitHub&nbsp;&#8599;</a>
+    </div>
+  </header>
+
+  <main>
+    <!-- ============================= INTRO ============================= -->
+    <section class="intro">
+      <span class="eyebrow mono">template catalog</span>
+      <h1>Pick a landing.<br /><span class="grad">Make it yours.</span></h1>
+      <p>Product landing templates in plain HTML, CSS and JavaScript. Preview the live demo, then download the one you want — no build step, no dependencies, no framework.</p>
+    </section>
+
+    <!-- ============================= CARDS ============================= -->
+    <section class="cards">
+      <article class="tcard">
+        <a class="shot" href="classic/" aria-label="Open the Classic live demo">
+          <img src="img/classic.webp" alt="Classic template — hero of the live demo" width="1440" height="900" />
+          <span class="shot-tag mono">live preview &#8599;</span>
+        </a>
+        <div class="tbody">
+          <div class="trow">
+            <h2>Classic</h2>
+            <span class="badge">generic · baseline</span>
+          </div>
+          <p class="origin mono">distilled from an analysis of openlogi.org</p>
+          <p class="desc">The quiet one: hairlines instead of shadows, a subtractive navbar, isometric illustrations in the feature cards, light and dark themes. The download buttons resolve the latest GitHub release on their own.</p>
+          <div class="tags">
+            <span>Light &amp; dark</span>
+            <span>Isometric SVGs</span>
+            <span>Subtractive nav</span>
+          </div>
+          <div class="acts">
+            <a class="btn btn-primary" href="classic/">Preview</a>
+            <a class="btn btn-ghost" href="downloads/classic.zip" download>Download .zip</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="tcard">
+        <a class="shot" href="aurora/" aria-label="Open the Aurora live demo">
+          <img src="img/aurora.webp" alt="Aurora template — hero of the live demo" width="1440" height="900" />
+          <span class="shot-tag mono">live preview &#8599;</span>
+        </a>
+        <div class="tbody">
+          <div class="trow">
+            <h2>Aurora</h2>
+            <span class="badge">generic · artifact-rich</span>
+          </div>
+          <p class="origin mono">a fresh take, inspired by the MIT Genex desktop app</p>
+          <p class="desc">The night one: dark-first with a working light variant. An app frame with a halo, mini-UI mocks, gradient ribbons, a starfield CTA, a footer range and grain over everything — all CSS and SVG, no video.</p>
+          <div class="tags">
+            <span>Dark-first</span>
+            <span>Glow &amp; ribbons</span>
+            <span>Starfield</span>
+            <span>OFL fonts</span>
+          </div>
+          <div class="acts">
+            <a class="btn btn-primary" href="aurora/">Preview</a>
+            <a class="btn btn-ghost" href="downloads/aurora.zip" download>Download .zip</a>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- ============================== HOW ============================== -->
+    <section class="how">
+      <h2>How to use.</h2>
+      <ol>
+        <li>
+          <b>Download the zip</b> you picked — or clone the repository.
+          <span class="muted">Each zip carries a START-HERE.md with both paths.</span>
+        </li>
+        <li>
+          <b>Instantiate it</b> from a clone of landing-starter. The bootstrap fills every placeholder and fails loudly if one is left behind:
+          <span class="cmd">
+            <span class="sigil">$</span>
+            <code>node bootstrap.mjs ../my-app --template template-v2 --name "My App" --accent "#7c3aed"</code>
+            <button type="button" class="copy-btn" data-copy='node bootstrap.mjs ../my-app --template template-v2 --name "My App" --accent "#7c3aed"' aria-label="Copy command">copy</button>
+          </span>
+          <span class="muted">Drop <code>--template</code> for Classic (the default); run <code>node bootstrap.mjs --list</code> to see the catalog.</span>
+        </li>
+        <li>
+          <b>Customize</b> the tokens at the top of <code>assets/css/styles.css</code>, then serve it — <code>node serve.mjs</code>. There is no build step.
+        </li>
+      </ol>
+    </section>
+  </main>
+
+  <footer>
+    <div class="foot-inner">
+      <p>Templates distilled and reimplemented from public sources — the Genex desktop app is MIT. Typefaces: Zalando Sans SemiExpanded &amp; Geist Mono (SIL OFL).</p>
+      <p class="mono">&copy; <span id="year">2026</span> landing-starter</p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
