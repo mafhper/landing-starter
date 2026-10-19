@@ -93,12 +93,6 @@ code { font-family: var(--font-mono); }
   gap: 16px;
 }
 .brand { display: inline-flex; align-items: center; gap: 9px; font-weight: 600; letter-spacing: -0.015em; }
-.brand-mark {
-  width: 20px; height: 20px;
-  border-radius: 30%;
-  background: linear-gradient(140deg, var(--accent), var(--glow-b));
-  box-shadow: 0 0 16px -4px color-mix(in srgb, var(--glow-a) 80%, transparent);
-}
 .bar-link { font-size: 12.5px; color: var(--muted); }
 .bar-link:hover { color: var(--ink); }
 
@@ -335,6 +329,8 @@ footer { border-top: 1px solid var(--hairline); padding: 30px 0 40px; }
   gap: 12px;
 }
 footer p { color: var(--faint); font-size: 12.5px; max-width: 72ch; text-wrap: pretty; }
+footer a { color: var(--muted); text-decoration: underline; text-underline-offset: 2px; }
+footer a:hover { color: var(--ink); }
 footer .mono { white-space: nowrap; }
 
 /* ---- breakpoints --------------------------------------------------------- */
