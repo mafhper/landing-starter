@@ -11,7 +11,8 @@ below, alongside `.wrangler/`.
 - `template/` = Classic, `template-v2/` = Aurora, `template-v3/` = Silk. These
   are the masters, each with its own `index.html`, `assets/`, `serve.mjs` and
   `README.template.md`. Classic and Aurora also carry `download/`; Silk is an
-  editorial/commerce page with a client-side cart demo and no download flow.
+  editorial/commerce page with a client-side cart demo, `contrast.mjs` and no
+  download flow.
 - `demo/`, `demo-v2/`, `demo-v3/` = instantiated copies (placeholders already
   filled, `README.md` instead of `README.template.md`). Published as `/classic/`,
   `/aurora/`, `/silk/`. To change a template, edit `template*/` — never edit a
