@@ -5,7 +5,8 @@
    O que ele faz, em ordem:
      1. limpa _site/ e _stage/;
      2. copia site/ (a galeria) para a raiz do _site;
-     3. copia cada demo para o seu slug (demo/ -> /classic/, demo-v2/ -> /aurora/);
+     3. copia cada demo para o seu slug (demo/ -> /classic/, demo-v2/ -> /aurora/,
+        demo-v3/ -> /silk/);
      4. empacota cada template em downloads/<slug>.zip (com START-HERE.md e o
         README.template.md renomeado para README.md);
      5. valida: toda referência local (src/href) existe, e nenhum placeholder
@@ -34,6 +35,7 @@ const noZip = process.argv.includes("--no-zip");
 const TEMPLATES = [
   { slug: "classic", dir: "template", demo: "demo", name: "Classic" },
   { slug: "aurora", dir: "template-v2", demo: "demo-v2", name: "Aurora" },
+  { slug: "silk", dir: "template-v3", demo: "demo-v3", name: "Silk" },
 ];
 
 /* ---- 1. limpeza ---------------------------------------------------------- */
@@ -87,6 +89,9 @@ Replace the tokens yourself, anywhere they appear:
     __SLUG__           slug for package ids (brew)
     __ACCENT__         brand colour (hex)
     __VERSION__        version shown in the hero
+
+A template uses only the placeholders it needs; a token listed here that the
+template does not contain is simply ignored.
 
 Then run \`node serve.mjs\` and open http://localhost:8787/.
 No build step: it is plain HTML, CSS and JavaScript.

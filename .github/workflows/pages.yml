@@ -1,5 +1,5 @@
 # Monta o catálogo no _site e publica no GitHub Pages:
-# galeria na raiz, demos em /classic/ e /aurora/, zips em /downloads/
+# galeria na raiz, demos em /classic/, /aurora/ e /silk/, zips em /downloads/
 # (gerados aqui pelo build — nunca versionados). O bootstrap, os templates
 # e o workflow não vão para o site.
 name: Deploy catalog (GitHub Pages)
@@ -11,8 +11,10 @@ on:
       - "site/**"
       - "demo/**"
       - "demo-v2/**"
+      - "demo-v3/**"
       - "template/**"
       - "template-v2/**"
+      - "template-v3/**"
       - "tools/**"
       - ".github/workflows/pages.yml"
   workflow_dispatch:

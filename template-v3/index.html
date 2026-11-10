@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>__PROJECT_NAME__ — Casa de seda</title>
+<meta name="description" content="__DESC__">
+<meta property="og:title" content="__PROJECT_NAME__">
+<meta property="og:description" content="__DESC__">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#f4efe7">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%2317140f'/%3E%3Cpath d='M13 43c11-3 10-17 20-21 7-3 14 0 18 5v9c-6-7-14-7-18-1-5 8-10 12-20 8Z' fill='%23f4efe7'/%3E%3C/svg%3E">
+<link rel="preload" href="assets/fonts/bodoni-moda-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/bodoni-moda-italic-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/css/styles.css">
+<script>
+  document.documentElement.classList.add("js");
+  setTimeout(function () {
+    if (!document.body || !document.body.classList.contains("is-ready")) {
+      document.documentElement.classList.remove("js");
+    }
+  }, 3000);
+</script>
+</head>
+<body>
+
+<a class="skip" href="#conteudo">Pular para o conteúdo</a>
+<div class="grain" aria-hidden="true"></div>
+
+<header class="site-head" id="topo">
+  <a class="brand" href="#topo" aria-label="__PROJECT_NAME__, início">__PROJECT_NAME__<span>.</span></a>
+
+  <nav class="site-nav" aria-label="Navegação principal">
+    <a href="#colecao">Coleção</a>
+    <a href="#atelier">Atelier</a>
+    <a href="#diario">Diário</a>
+    <a href="#contato">Contato</a>
+  </nav>
+
+  <div class="head__end">
+    <button class="cart-btn" type="button" id="cart-open" aria-label="Abrir sacola">
+      Sacola <span class="cart-count" id="cart-count" hidden>0</span>
+    </button>
+    <button class="menu-toggle" type="button" id="menu-toggle" aria-expanded="false" aria-controls="menu">
+      Menu
+      <span class="menu-toggle__bars" aria-hidden="true"><i></i><i></i></span>
+    </button>
+  </div>
+</header>
+
+<div class="menu" id="menu" aria-hidden="true" inert>
+  <div class="menu__top">
+    <span class="brand" aria-hidden="true">__PROJECT_NAME__<span>.</span></span>
+    <button class="menu__close" type="button" id="menu-close">Fechar</button>
+  </div>
+  <nav class="menu__nav" aria-label="Navegação do menu">
+    <a href="#colecao">Coleção</a>
+    <a href="#atelier">Atelier</a>
+    <a href="#diario">Diário</a>
+    <a href="#contato">Contato</a>
+  </nav>
+  <p class="menu__foot">São Paulo · desde 1987</p>
+</div>
+
+<main id="conteudo">
+
+  <!-- ============================================================ hero -->
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="hero__inner">
+      <div class="hero__copy">
+        <p class="hero__eyebrow">Casa de seda · São Paulo · desde 1987</p>
+        <h1 class="hero__title" id="hero-title">
+          <span class="line"><span>O peso</span></span>
+          <span class="line"><span>do luxo</span></span>
+          <span class="line"><span>é <em>leve</em>.</span></span>
+        </h1>
+        <p class="hero__lede">
+          __TAGLINE__
+          Seis semanas entre o fio e o seu pescoço.
+        </p>
+        <div class="hero__cta">
+          <a class="btn btn--solid" href="#colecao">Explorar a coleção <span aria-hidden="true">→</span></a>
+          <a class="btn btn--ghost" href="#atelier">Conhecer o atelier</a>
+        </div>
+      </div>
+
+      <div class="hero__visual" aria-hidden="true">
+        <div class="hero__silk hero__silk--back"><span class="silk" data-scarf="argila"></span></div>
+        <div class="hero__silk hero__silk--front"><span class="silk" data-scarf="onda"></span></div>
+        <span class="hero__tag">Edição de 40 · Outono 2026</span>
+      </div>
+    </div>
+
+    <div class="hero__stats">
+      <div class="stat">
+        <span class="stat__k">16 momme</span>
+        <span class="stat__l">Peso da seda</span>
+      </div>
+      <div class="stat">
+        <span class="stat__k">90 × 90</span>
+        <span class="stat__l">Centímetros</span>
+      </div>
+      <div class="stat">
+        <span class="stat__k">40 peças</span>
+        <span class="stat__l">Por estação</span>
+      </div>
+      <span class="hero__scroll">Role <i aria-hidden="true"></i></span>
+    </div>
+  </section>
+
+  <!-- ========================================================= marquee -->
+  <div class="marquee">
+    <p class="sr-only">Tecida à mão em São Paulo. Tingimento em pequenos lotes. Borda costurada à mão. Edição numerada.</p>
+    <div class="marquee__track" aria-hidden="true">
+      <div class="marquee__group">
+        <span>Tecida à mão em São Paulo</span><b>·</b>
+        <span>Tingimento em pequenos lotes</span><b>·</b>
+        <span>Borda costurada à mão</span><b>·</b>
+        <span>Edição numerada</span><b>·</b>
+      </div>
+      <div class="marquee__group">
+        <span>Tecida à mão em São Paulo</span><b>·</b>
+        <span>Tingimento em pequenos lotes</span><b>·</b>
+        <span>Borda costurada à mão</span><b>·</b>
+        <span>Edição numerada</span><b>·</b>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================= manifesto -->
+  <section class="sec manifesto" id="atelier" aria-labelledby="manifesto-title">
+    <div class="wrap">
+      <div class="sec__head" data-reveal>
+        <span class="sec__num">01 — Manifesto</span>
+        <span class="sec__note">São Paulo · 23°33′S</span>
+      </div>
+
+      <div class="manifesto__grid">
+        <div class="manifesto__lead" data-reveal>
+          <h2 class="manifesto__title" id="manifesto-title">Matéria antes de <em>marca.</em></h2>
+          <p class="manifesto__quote">“Não fazemos estampas. Fazemos tecido com memória.”</p>
+          <p class="manifesto__foot">Seda brasileira · tear de 1987 · São Paulo</p>
+        </div>
+
+        <div class="manifesto__body">
+          <p data-reveal>
+            A __PROJECT_NAME__ nasceu de uma teimosia: fazer seda no Brasil, em pequena escala, sem atalho.
+            O fio vem de um único produtor no Paraná, o tear é de 1987 e o pigmento é mineral.
+            Nada sai daqui sem passar pela mão de alguém.
+          </p>
+          <p data-reveal>
+            Cada estação são quarenta peças. Não porque o mercado pede quarenta, mas porque é
+            o que o tear aguenta sem perder o ponto.
+          </p>
+
+          <div class="principles">
+            <div class="principle" data-reveal>
+              <span class="principle__n">01</span>
+              <div>
+                <h3>Fio</h3>
+                <p>Seda brasileira de 16 momme. O fio descansa dois dias antes de entrar no tear.</p>
+              </div>
+            </div>
+            <div class="principle" data-reveal>
+              <span class="principle__n">02</span>
+              <div>
+                <h3>Cor</h3>
+                <p>Pigmento mineral em três banhos. A cor é corrigida no terceiro, nunca no primeiro.</p>
+              </div>
+            </div>
+            <div class="principle" data-reveal>
+              <span class="principle__n">03</span>
+              <div>
+                <h3>Mão</h3>
+                <p>Borda enrolada e costurada à mão. Trinta e oito pontos por centímetro.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================== coleção -->
+  <section class="sec collection" id="colecao" aria-labelledby="colecao-title">
+    <div class="wrap">
+      <div class="sec__head" data-reveal>
+        <span class="sec__num">02 — Coleção</span>
+        <span class="sec__note">Outono 2026 · 4 peças</span>
+      </div>
+
+      <div class="collection__head">
+        <div data-reveal>
+          <h2 class="collection__title" id="colecao-title">Quatro peças.<br>Nenhuma <em>repetida.</em></h2>
+        </div>
+        <div class="filters" role="group" aria-label="Filtrar a coleção" data-reveal>
+          <button class="filter" type="button" data-filter="todas" aria-pressed="true">Todas</button>
+          <button class="filter" type="button" data-filter="mar" aria-pressed="false">Mar</button>
+          <button class="filter" type="button" data-filter="botanico" aria-pressed="false">Botânico</button>
+          <button class="filter" type="button" data-filter="geometrico" aria-pressed="false">Geométrico</button>
+        </div>
+      </div>
+
+      <div class="collection__grid">
+        <article class="card" data-card="onda" data-category="mar">
+          <button class="card__btn" type="button" data-open="onda" aria-label="Ver a peça Onda Lenta">
+            <span class="card__frame">
+              <span class="card__tag">Edição de 40</span>
+              <span class="silk" data-scarf="onda" aria-hidden="true"></span>
+            </span>
+          </button>
+          <div class="card__meta">
+            <div>
+              <h3 class="card__name">Onda Lenta</h3>
+              <p class="card__spec">Seda 16 momme · 90 × 90 cm</p>
+            </div>
+            <div class="card__buy">
+              <span class="card__price">R$ 1.480</span>
+              <button class="card__open-text" type="button" data-open="onda">Ver peça</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="card" data-card="jardim" data-category="botanico">
+          <button class="card__btn" type="button" data-open="jardim" aria-label="Ver a peça Jardim Seco">
+            <span class="card__frame">
+              <span class="card__tag">Edição de 40</span>
+              <span class="silk" data-scarf="jardim" aria-hidden="true"></span>
+            </span>
+          </button>
+          <div class="card__meta">
+            <div>
+              <h3 class="card__name">Jardim Seco</h3>
+              <p class="card__spec">Seda 16 momme · 90 × 90 cm</p>
+            </div>
+            <div class="card__buy">
+              <span class="card__price">R$ 1.620</span>
+              <button class="card__open-text" type="button" data-open="jardim">Ver peça</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="card" data-card="noite" data-category="mar">
+          <button class="card__btn" type="button" data-open="noite" aria-label="Ver a peça Noite Clara">
+            <span class="card__frame">
+              <span class="card__tag">Edição de 40</span>
+              <span class="silk" data-scarf="noite" aria-hidden="true"></span>
+            </span>
+          </button>
+          <div class="card__meta">
+            <div>
+              <h3 class="card__name">Noite Clara</h3>
+              <p class="card__spec">Seda 16 momme · 90 × 90 cm</p>
+            </div>
+            <div class="card__buy">
+              <span class="card__price">R$ 1.540</span>
+              <button class="card__open-text" type="button" data-open="noite">Ver peça</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="card" data-card="argila" data-category="geometrico">
+          <button class="card__btn" type="button" data-open="argila" aria-label="Ver a peça Argila">
+            <span class="card__frame">
+              <span class="card__tag">Edição de 40</span>
+              <span class="silk" data-scarf="argila" aria-hidden="true"></span>
+            </span>
+          </button>
+          <div class="card__meta">
+            <div>
+              <h3 class="card__name">Argila</h3>
+              <p class="card__spec">Seda 16 momme · 90 × 90 cm</p>
+            </div>
+            <div class="card__buy">
+              <span class="card__price">R$ 1.380</span>
+              <button class="card__open-text" type="button" data-open="argila">Ver peça</button>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================== ofício -->
+  <section class="atelier on-dark" id="oficina" aria-labelledby="oficina-title">
+    <div class="wrap">
+      <div class="sec__head" data-reveal>
+        <span class="sec__num">03 — Ofício</span>
+        <span class="sec__note">Quatro etapas · seis semanas</span>
+      </div>
+
+      <div class="atelier__grid">
+        <div class="atelier__intro" data-reveal>
+          <h2 class="atelier__title" id="oficina-title">Seis semanas,<br><em>quarenta</em> peças.</h2>
+          <p class="atelier__text">
+            O tempo aqui não é marketing. É a soma de quatro etapas que não podem ser aceleradas
+            sem que o tecido denuncie.
+          </p>
+          <div class="atelier__silk" aria-hidden="true">
+            <span class="silk" data-scarf="noite"></span>
+          </div>
+          <p class="atelier__caption">Noite Clara · detalhe do terceiro banho</p>
+        </div>
+
+        <div class="atelier__list">
+          <div class="step" data-reveal>
+            <span class="step__n">01</span>
+            <div>
+              <h3 class="step__name">Fio</h3>
+              <p class="step__desc">Seda brasileira de 16 momme, de um único produtor. O fio descansa dois dias para perder a tensão do cone.</p>
+            </div>
+            <span class="step__time">2 dias</span>
+          </div>
+          <div class="step" data-reveal>
+            <span class="step__n">02</span>
+            <div>
+              <h3 class="step__name">Tear</h3>
+              <p class="step__desc">Um tear manual de 1987, quatro metros por dia. A trama é ajustada à mão a cada rolo.</p>
+            </div>
+            <span class="step__time">3 semanas</span>
+          </div>
+          <div class="step" data-reveal>
+            <span class="step__n">03</span>
+            <div>
+              <h3 class="step__name">Cor</h3>
+              <p class="step__desc">Pigmento mineral em três banhos. A cor é corrigida no terceiro, nunca no primeiro.</p>
+            </div>
+            <span class="step__time">1 semana</span>
+          </div>
+          <div class="step" data-reveal>
+            <span class="step__n">04</span>
+            <div>
+              <h3 class="step__name">Borda</h3>
+              <p class="step__desc">Borda enrolada e costurada à mão, trinta e oito pontos por centímetro. É a etapa que não tem atalho.</p>
+            </div>
+            <span class="step__time">2 semanas</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ diário -->
+  <section class="sec journal" id="diario" aria-labelledby="diario-title">
+    <div class="wrap">
+      <div class="sec__head" data-reveal>
+        <span class="sec__num">04 — Diário</span>
+        <span class="sec__note">Caderno de atelier</span>
+      </div>
+
+      <h2 class="sr-only" id="diario-title">Diário</h2>
+
+      <div class="journal__rows">
+        <article class="journal__row" data-reveal>
+          <span class="journal__n">01</span>
+          <div>
+            <h3 class="journal__title">O que a luz faz com a seda</h3>
+            <p class="journal__excerpt">Seda não tem cor própria. Tem memória da luz que atravessa.</p>
+          </div>
+          <p class="journal__meta"><span>Ensaio</span><span>12.10.2026</span></p>
+        </article>
+
+        <article class="journal__row" data-reveal>
+          <span class="journal__n">02</span>
+          <div>
+            <h3 class="journal__title">Três banhos, uma cor</h3>
+            <p class="journal__excerpt">Por que a cor final nunca é a do primeiro banho.</p>
+          </div>
+          <p class="journal__meta"><span>Atelier</span><span>28.09.2026</span></p>
+        </article>
+
+        <article class="journal__row" data-reveal>
+          <span class="journal__n">03</span>
+          <div>
+            <h3 class="journal__title">Por que 16 momme</h3>
+            <p class="journal__excerpt">O peso que separa um lenço de um pano.</p>
+          </div>
+          <p class="journal__meta"><span>Matéria</span><span>05.09.2026</span></p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================== newsletter -->
+  <section class="sec newsletter" id="contato" aria-labelledby="newsletter-title">
+    <div class="wrap">
+      <div class="newsletter__grid">
+        <div class="newsletter__lead" data-reveal>
+          <span class="sec__num">Cartas do atelier</span>
+          <h2 class="newsletter__title" id="newsletter-title">Uma carta por <em>estação.</em></h2>
+          <p class="newsletter__text">
+            O que saiu do tear, o que ainda está no banho e o que não vai existir de novo.
+            Nada além.
+          </p>
+        </div>
+
+        <form class="newsletter__form" id="newsletter-form" novalidate data-reveal>
+          <div class="field">
+            <div class="field__control">
+              <label for="email">Seu e-mail</label>
+              <input class="field__input" id="email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="voce@exemplo.com" aria-describedby="newsletter-note newsletter-status">
+            </div>
+            <button class="field__submit" type="submit">Assinar</button>
+          </div>
+          <p class="form__note" id="newsletter-note">Uma carta por estação. Cancele quando quiser.</p>
+          <p class="form__status" id="newsletter-status" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer__top">
+      <p class="footer__note">
+        __DESC__
+      </p>
+
+      <div class="footer__cols">
+        <div class="footer__col">
+          <h3>Coleção</h3>
+          <a href="#colecao">Onda Lenta</a>
+          <a href="#colecao">Jardim Seco</a>
+          <a href="#colecao">Noite Clara</a>
+          <a href="#colecao">Argila</a>
+        </div>
+        <div class="footer__col">
+          <h3>Casa</h3>
+          <a href="#atelier">Manifesto</a>
+          <a href="#oficina">Ofício</a>
+          <a href="#diario">Diário</a>
+        </div>
+        <div class="footer__col">
+          <h3>Contato</h3>
+          <a href="mailto:atelier@example.com">atelier@example.com</a>
+          <p>Rua da Seda, 36<br>São Paulo · Brasil</p>
+        </div>
+      </div>
+    </div>
+
+    <p class="footer__word" aria-hidden="true">__PROJECT_NAME__.</p>
+
+    <div class="footer__bottom">
+      <span>© <span id="year">2026</span> __PROJECT_NAME__. Todos os direitos reservados.</span>
+      <span>Feito em São Paulo</span>
+      <a href="#topo">Voltar ao topo ↑</a>
+    </div>
+  </div>
+</footer>
+
+<!-- ====================================================== peça / sacola -->
+<dialog class="product" id="product-dialog" aria-labelledby="product-title">
+  <button class="dialog-close product__close" type="button" data-close aria-label="Fechar detalhe da peça">×</button>
+  <div class="product__grid">
+    <div class="product__art" aria-hidden="true">
+      <span class="silk" id="product-art" data-scarf="onda"></span>
+    </div>
+    <div class="product__body">
+      <p class="product__kicker" id="product-kicker">Edição de 40 · Outono 2026</p>
+      <h2 class="product__title" id="product-title">Onda Lenta</h2>
+      <p class="product__price" id="product-price">R$ 1.480</p>
+      <p class="product__desc" id="product-desc"></p>
+      <dl class="product__specs" id="product-specs"></dl>
+      <p class="product__care" id="product-care"></p>
+      <button class="btn btn--solid product__add" type="button" id="product-add" data-add="onda">Adicionar à sacola</button>
+      <p class="product__note">Peça numerada · envio em até 5 dias úteis</p>
+    </div>
+  </div>
+</dialog>
+
+<dialog class="cart" id="cart-dialog" aria-labelledby="cart-title">
+  <div class="cart__head">
+    <h2 class="cart__title" id="cart-title">Sacola</h2>
+    <button class="dialog-close" type="button" data-close aria-label="Fechar sacola">×</button>
+  </div>
+
+  <div class="cart__body">
+    <p class="cart__empty" id="cart-empty">
+      Sua sacola está vazia.
+      <button class="btn btn--ghost" type="button" id="cart-explore">Explorar a coleção</button>
+    </p>
+    <ul class="cart__list" id="cart-list" hidden></ul>
+  </div>
+
+  <div class="cart__foot" id="cart-foot" hidden>
+    <div class="cart__sum"><span>Subtotal</span><span id="cart-total">R$ 0</span></div>
+    <p class="cart__note">Frete e impostos calculados na reserva. Peças numeradas saem em até 5 dias úteis.</p>
+    <button class="btn btn--solid cart__checkout" type="button" id="cart-checkout">Finalizar reserva</button>
+    <p class="cart__status" id="cart-status" role="status" aria-live="polite"></p>
+  </div>
+</dialog>
+
+<script src="assets/js/app.js"></script>
+</body>
+</html>

@@ -7,7 +7,7 @@
      node bootstrap.mjs --list
 
    Opções:
-     --template <dir>       template do catálogo (default: template; ex.: template-v2)
+     --template <dir>       template do catálogo (default: template; ex.: template-v2, template-v3)
      --name "Meu App"       nome exibido (default: nome da pasta do destino)
      --repo owner/repo      repositório GitHub (default: OWNER/REPO)
      --tagline "..."        primeira frase do lede do hero
@@ -36,7 +36,8 @@ const ROOT = dirname(fileURLToPath(import.meta.url));
 
 /* ---- o catálogo ---------------------------------------------------------
    Cada template do catálogo é uma pasta "template" ou "template-*" na raiz
-   (template/ = Classic; template-v2/ = Aurora). O --list imprime esta lista. */
+   (template/ = Classic; template-v2/ = Aurora; template-v3/ = Silk). O --list
+   imprime esta lista. */
 
 const TEMPLATE_DIRS = readdirSync(ROOT, { withFileTypes: true })
   .filter((e) => e.isDirectory() && (e.name === "template" || e.name.startsWith("template-")))
@@ -238,12 +239,24 @@ if (dry) {
   for (const rel of escritos) console.log(`  ${rel}`);
   console.log("\nrode sem --dry para escrever.");
 } else {
+  const passos = [`1. cd ${JSON.stringify(rootRel(destino))}`];
+  let passo = 2;
+
+  const suites = ["download/worker.test.mjs", "assets/js/latest-release.test.mjs"]
+    .filter((rel) => existsSync(join(destino, rel)));
+  if (suites.length) {
+    passos.push(`${passo++}. node --test ${suites.join(" ")}`);
+  }
+  if (existsSync(join(destino, "serve.mjs"))) {
+    passos.push(`${passo++}. para ver local: node serve.mjs`);
+  }
+  if (existsSync(join(destino, "download/worker.mjs"))) {
+    passos.push(`${passo++}. opcional, só para host com server-side: ajuste download/worker.mjs (CONFIG.repo) ou download/wrangler.jsonc (vars)`);
+  }
+
   console.log(`
 próximos passos:
-  1. cd ${JSON.stringify(rootRel(destino))}
-  2. node --test download/worker.test.mjs assets/js/latest-release.test.mjs
-  3. para ver local: node serve.mjs
-  4. opcional, só para host com server-side: ajuste download/worker.mjs (CONFIG.repo) ou download/wrangler.jsonc (vars)`);
+  ${passos.join("\n  ")}`);
 }
 
 function rootRel(p) {

@@ -155,7 +155,7 @@ code { font-family: var(--font-mono); }
   margin: 0 auto;
   padding: 0 32px 24px;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: 26px;
   align-items: start;
 }
@@ -336,7 +336,6 @@ footer .mono { white-space: nowrap; }
 /* ---- breakpoints --------------------------------------------------------- */
 
 @media (max-width: 900px) {
-  .cards { grid-template-columns: 1fr; }
   .intro { padding-top: 64px; }
 }
 @media (max-width: 560px) {
